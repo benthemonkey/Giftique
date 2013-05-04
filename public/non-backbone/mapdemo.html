@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script src="jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="jquery-jvectormap-world-mill-en.js"></script>
+        <script src="gdp-data.js"></script>
+        <link rel="stylesheet" href="jquery-jvectormap-1.2.2.css" />
+        <link rel="stylesheet" href="bootstrap.min.css" />
+        <style type="text/css">
+        .put-name{display: inline;}
+
+        .giftitem{
+            position: relative;
+            width: 170px;
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 3px;
+        }
+
+        .product_source{
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+        }
+
+        .product_thumb{
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+        .form-item-p{
+            padding: 60px 5px 20px;
+            height: 190px;
+        }
+        </style>
+        <script type="text/javascript">
+        var map;
+        $(document).ready(function(){
+                $('.demo-map').vectorMap({
+                  map: 'world_mill_en',
+                  backgroundColor: 'transparent',
+
+                  series: {
+                    regions: [{
+                      values: gdpData,
+                      scale: ['#C8EEFF', '#0071A4'],
+                      normalizeFunction: 'polynomial'
+                    }]
+                  },
+                  hoverOpacity: 0.7,
+                  hoverColor: false,
+                  onRegionClick: function(event,str){
+                    var v = map.getRegionName(str),
+                    searches = [{name: "l1", val: v+" souvenir"},
+                    {name: "l2", val: v+" clothing"},
+                    {name: "l3", val: v+" gift"},
+                    {name: "l4", val: v+" custom"}];
+                    etsysearch(searches);
+                }
+                });
+                map = $('.demo-map').vectorMap('get','mapObject');
+              });
+
+        var etsysearch = function(ajax_list) {
+                    api_key = "muf6785p5zsu3iwp28e51kgi";
+                    terms = ajax_list[0].val;
+                    write_to = ajax_list[0].name;
+                    
+                    etsyURL = "http://openapi.etsy.com/v2/listings/active.js?keywords="+terms;
+
+                    //&recipient=women
+                    etsyURL+="&limit=5&includes=Images:1&sort_on=score&api_key="+api_key;
+        
+                    $('#'+write_to+'-results').empty();
+                    $('<p></p>').text('Searching for '+terms).appendTo('#'+write_to+'-results');
+        
+                    $.ajax({
+                        type: "GET",
+                        url: etsyURL,
+                        async: false,
+                        data: "",
+                        dataType: "jsonp",
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data) {
+                            if (data.ok) {
+                                $('#'+write_to+'-results').empty();
+                                if (data.count > 0) {
+                                    $('<p>Based on your interest in '+terms+':</p>').appendTo('#'+write_to+'-results');
+                                    
+                                    data.results.sort(function(a,b){return a.views < b.views ? 1 : -1;});
+                                    $.each(data.results, function(i,item) {
+                                       
+$('<div class="giftitem" id="' + write_to + i + '\"><p class="pull-left">&nbsp;Views: ' + item.views + '</p><p class="pull-right">$' + item.price + "&nbsp;</p></div>").appendTo("#" + write_to + "-results");
+
+$("<img/>").attr("src", "etsy.png", "alt", "From Etsy.com").addClass("product_source").appendTo("#" + write_to + i);
+
+$("<img/>").attr("src", item.Images[0].url_170x135, "alt", item.title).appendTo("#" + write_to + i).wrap("<a href='" + item.url + "'></a>");
+
+                                    });
+                                } else {
+                                    $('<p>No results.</p>').appendTo('#'+write_to+'-results');
+                                }
+                                
+                                if(ajax_list.length > 1){
+                                    etsysearch(ajax_list.splice(1));
+                                }
+                            } else {
+                                $('#'+write_to+'-results').empty();
+                                alert(data.error);
+                            }
+                        },
+                        error: function(result){console.log(result);}
+                    });
+        
+                    return false;
+                };
+        </script>
+    </head>
+    <body>
+            <div class="giftique-container" >
+                <div class="demo-map" style="width: 50%; margin: 0px auto; height: 300px"></div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div id="l1-results"></div>
+                    <div id="l2-results"></div>
+                    <div id="l3-results"></div>
+                    <div id="l4-results"></div>
+                </div>
+            </div>
+    </body>
+</html>

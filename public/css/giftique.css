@@ -1,0 +1,101 @@
+/*body{
+	background: url('../img/flowers_brooklyn_blur.jpg') no-repeat;
+	background-size: 1800px;
+}*/
+
+body{
+	background: url('../img/grey_wash_wall.png');
+}
+
+.container{
+	margin-top: 100px;
+	background-color: white;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+     -webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
+        -moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
+             box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
+}
+
+.loading{
+	background: url('../img/loading-grey.gif');
+	width: 220px;
+	height: 19px;
+	margin: 10px auto;
+}
+
+#question-list{
+	list-style: none;
+}
+
+#question-list > li{
+	height: 22px;
+}
+
+.btn-link{
+	height: 20px;
+	padding: 0;
+}
+
+.navbar{
+	margin-bottom: 10px;
+}
+
+.sidebar{
+	padding: 5px 0;
+}
+
+.nav-list{
+	padding: 0 10px;
+}
+
+.nav-list > li > a{
+	margin-left: -10px;
+	margin-right: -10px;
+	padding-left: 10px;
+}
+
+.footer{
+	margin-bottom: 0;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	font-size: 12px;
+	line-height: 16px;
+}
+
+#map{
+	width: 80%; 
+	margin: 0 auto;
+	height: 350px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+.blank{
+	height: 14px;
+}
+
+.module-nav{
+	width: 40px;
+	margin-left: -13%;
+	float: left;
+}
+
+
+/* failed attempt to fix up the facebook widget. better off as it is.
+.fb_edge_comment_widget {
+    top: -250px!important;
+    left: 0!important;
+    height: 249px;
+    background: url('../img/arrow-down.gif') 0 100% no-repeat;
+}
+.fb_edge_comment_widget > span {
+    height: 244px !important;
+    overflow: hidden;
+    border-top: 1px solid #000;
+}
+.fb_edge_comment_widget > span > iframe {
+    margin-top: -8px;
+    margin-bottom: -1px;
+} */

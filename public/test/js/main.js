@@ -9,7 +9,7 @@ require.config({
 			exports: '_'
 		},
 		backbone: {
-			deps: ["underscore", "jquery"],
+			deps: ["libs/underscore", "jquery"],
 			exports: "Backbone"
 		}
 	}

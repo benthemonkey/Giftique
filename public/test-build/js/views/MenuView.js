@@ -1,13 +1,14 @@
 define([
-	'text!templates/MenuTemplate.html'
-], function(MenuTemplate){
+	'underscore',
+	'backbone',
+	'text!templates/Menu.html'
+],function(_, Backbone, Menu){
 
 	var MenuView = Backbone.View.extend({
 		el: $('#page'),
 
 		render: function(){
-			console.log(MenuTemplate);
-			this.$el.html(MenuTemplate);
+			this.$el.html(Menu);
 		}
 	});
 

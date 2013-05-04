@@ -1,0 +1,378 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script type="text/javascript">
+            var giftiqueform = {
+                data: {
+                        user: null,
+                        occasion: null,
+                        relationship: null,
+                        recipient: "Recipient",
+                        location: null,
+                        fooddrink: null,
+                        activity: null,
+                        hobby: null,
+                        pricerange: "0-9999"
+                }
+            };
+
+            $(document).ready(function() {
+                //Try to load previously entered info
+                if (localStorage.giftiquedata){                    
+                    for (id in giftiqueform.data){
+                        if(localStorage[id]){
+                            giftiqueform.data[id] = localStorage[id];
+                            $('#'+id).val(localStorage[id]);
+                        }
+                    }
+                }
+                
+                $slider = $('.giftique-slider-frame');
+                $slide = $('.giftique-slider');
+                $active_slide = 0;
+                $slide_width = "850px";
+                $easing = "easeOutCubic";
+                $transition_speed = 400;//"slow";
+                
+                function slides(){
+                    return $slider.find($slide);
+                }
+                
+                function buttons(){
+                    return $('.giftique-slider-links').find('.slidelink');
+                }
+                
+                slides().first().addClass('active');
+                slides().first().css({"left": "0px"});
+                slides().first().show();
+                
+                giftiqueform.changeto = function(ind){
+                    if (ind == $active_slide){
+                        slides().eq(ind).effect("shake");
+                    } else {
+                        if (ind == null){ind = $active_slide + 1;} //allows changeto() to increment slide
+                        if (ind == -1){ind = $active_slide - 1;} //allows changeto(-1) to decrement slide
+                        slides().eq($active_slide).removeClass('active');
+                        buttons().eq($active_slide).removeClass('current');
+                        slides().eq(ind).addClass('active');
+                        buttons().eq(ind).addClass('current');
+                        slides().eq(ind).show();
+                        
+                        slides().eq($active_slide).animate({"left": ($active_slide < ind ? "-=" : "+=")+$slide_width},
+                                                           {duration: $transition_speed, complete: function($active_slide){slides().eq($active_slide).hide();}, easing: $easing});
+                        slides().eq(ind).css({"left": ($active_slide < ind ? "" : "-")+$slide_width});
+                        slides().eq(ind).animate({"left": ($active_slide < ind ? "-=" : "+=")+$slide_width},
+                                                 {duration: $transition_speed, easing: $easing });
+                        
+                        $active_slide = ind;
+                    }
+                }
+                
+                //process form changes on continue
+                giftiqueform.cont = function(){
+                    giftiqueform.getinput();
+                    giftiqueform.changeto();
+                }
+                
+                //process form changes on back
+                giftiqueform.back = function(){
+                    giftiqueform.getinput();
+                    giftiqueform.changeto(-1);
+                }
+                
+                giftiqueform.finish = function(){
+                    giftiqueform.getinput();
+                    ajax_list = Array();
+                    
+                    ids = ["location","fooddrink","activity","hobby"];
+                    
+                    for (var i=0; i<ids.length; i++){
+                        $('#'+ids[i]+'-results').slideDown();
+                        if (giftiqueform.data[ids[i]]){
+                            ajax_list.push({name: ids[i], val: giftiqueform.data[ids[i]]});
+                        }
+                    }
+                    
+                    giftiqueform.etsysearch(ajax_list);
+                }
+                
+                giftiqueform.getinput = function(){
+                    //grab input from all locations
+                    for (id in giftiqueform.data){
+                        if ($('#'+id).val()){
+                            giftiqueform.data[id] = $('#'+id).val();
+                            
+                            localStorage.giftiquedata = true;
+                            localStorage[id] = giftiqueform.data[id];
+                        }
+                    }
+                        
+                    $('#put-name').html(giftiqueform.data.recipient);
+                }
+                
+                giftiqueform.hideresults = function(name){
+                    $('#'+name+'-results').slideUp();
+                }
+                
+                giftiqueform.etsysearch = function(ajax_list) {
+                    api_key = "muf6785p5zsu3iwp28e51kgi";
+                    terms = ajax_list[0].val;
+                    write_to = ajax_list[0].name;
+                    
+                    etsyURL = "http://openapi.etsy.com/v2/listings/active.js?keywords="+terms;
+                    
+                    if (giftiqueform.data.pricerange){
+                        p = giftiqueform.data.pricerange.split('-');
+                        etsyURL+="&min_price="+p[0]+"&max_price="+p[1];
+                    }
+                    
+                    if (giftiqueform.data.occasion){
+                        etsyURL+="&occasion="+giftiqueform.data.occasion;
+                    }
+
+                    //&recipient=women
+                    etsyURL+="&limit=5&includes=Images:1&sort_on=score&api_key="+api_key;
+        
+                    $('#'+write_to+'-results').empty();
+                    $('<p></p>').text('Searching for '+terms).appendTo('#'+write_to+'-results');
+        
+                    $.ajax({
+                        url: etsyURL,
+                        async: false,
+                        dataType: "jsonp",
+                        success: function(data) {
+                            if (data.ok) {
+                                $('#'+write_to+'-results').empty();
+                                if (data.count > 0) {
+                                    $('<p>Based on your interest in '+terms+' (<button type="button" onclick="giftiqueform.hideresults(\''+write_to+'\')">Irrelevant?</button>):</p>').appendTo('#'+write_to+'-results');
+                                    
+                                    data.results.sort(function(a,b){return a.views < b.views ? 1 : -1;});
+                                    $.each(data.results, function(i,item) {
+                                        $('<div class="item" id="'+write_to+i+'"><p style="display:inline;float:left">Views: '+item.views+'</p><p style="display:inline;float:right">$'+item.price+'</p></div>').appendTo('#'+write_to+'-results');
+                                        $("<img/>").attr("src", item.Images[0].url_170x135,"alt",item.title).appendTo('#'+write_to+i).wrap(
+                                            "<a href='" + item.url + "'></a>"
+                                        );
+                                        $("<img/>").attr("src","etsy.png","alt","From Etsy.com").addClass("product_source").appendTo('#'+write_to+i);
+                                    });
+                                } else {
+                                    $('<p>No results.</p>').appendTo('#'+write_to+'-results');
+                                }
+                                
+                                if(ajax_list.length > 1){
+                                    giftiqueform.etsysearch(ajax_list.splice(1));
+                                }
+                            } else {
+                                $('#'+write_to+'-results').empty();
+                                alert(data.error);
+                            }
+                        }
+                    });
+        
+                    return false;
+                }
+            });
+        </script>
+        <style type="text/css">
+            
+            
+            
+            .slidelink {
+                margin: 10px 18px;
+                position: relative;
+                left: 0px;
+                padding: 10px;
+                width: 120px;
+                -moz-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+                box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+                background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+                background-color:#79bbff;
+                -moz-border-radius:6px;
+                -webkit-border-radius:6px;
+                border-radius:6px;
+                border:1px solid #84bbf3;
+                display:inline-block;
+                color:#ffffff;
+                font-weight:bold;
+                text-decoration:none;
+                text-shadow:1px 1px 0px #528ecc;
+            }.slidelink:hover {
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+                background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+                background-color:#378de5;
+            }
+            
+            .slidelink.current{
+                top: 10px;
+            }
+            
+            .giftique-container {
+                height: 250px;
+                width: 800px;
+                background-color: #f0f0f0;
+            }
+            
+            .giftique-slider-links {
+                height: 50px;
+                width: 800px;
+                background: rgb(30,87,153); /* Old browsers */
+                background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* IE10+ */
+                background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+            }
+            
+            .giftique-slider-frame {
+                position: absolute;
+                height: 200px;
+                width: 800px;
+                overflow: hidden;
+            }
+            
+            .giftique-slider {
+                display: none;
+                position: absolute;
+                height: 200px;
+                width: 800px;
+                left: 800px;
+                background: rgb(240,249,255); /* Old browsers */
+                background: -moz-linear-gradient(top, rgba(240,249,255,1) 0%, rgba(203,235,255,1) 47%, rgba(161,219,255,1) 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(240,249,255,1)), color-stop(47%,rgba(203,235,255,1)), color-stop(100%,rgba(161,219,255,1))); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, rgba(240,249,255,1) 0%,rgba(203,235,255,1) 47%,rgba(161,219,255,1) 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, rgba(240,249,255,1) 0%,rgba(203,235,255,1) 47%,rgba(161,219,255,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, rgba(240,249,255,1) 0%,rgba(203,235,255,1) 47%,rgba(161,219,255,1) 100%); /* IE10+ */
+                background: linear-gradient(to bottom, rgba(240,249,255,1) 0%,rgba(203,235,255,1) 47%,rgba(161,219,255,1) 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', endColorstr='#a1dbff',GradientType=0 ); /* IE6-9 */
+            }
+            
+            .giftique-slider p{
+                padding: 5px 20px;
+                height: 125px;
+            }
+            
+            .giftique-continue{
+                float: right;
+                vertical-align: bottom;
+                margin: 5px 20px;
+            }
+            
+            .giftique-back{
+                float: left;
+                vertical-align: bottom;
+                margin: 5px 20px;
+            }
+            
+            #put-name{display: inline;}
+            
+            .item{
+                width: 170px;
+                display: inline-block;
+                border: 1px solid black;
+                padding: 0px 10px;
+            }
+            
+            .product_source{
+                position: relative;
+                float: right;
+                top: -40px;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        <div class="giftique-container">
+            <div class="giftique-slider-links">
+                <button type="button" class="slidelink current" onclick="giftiqueform.changeto(0)">Basic</button>
+                <button type="button" class="slidelink" onclick="giftiqueform.changeto(1)">Travel</button>
+                <button type="button" class="slidelink" onclick="giftiqueform.changeto(2)">Food/Drink</button>
+                <button type="button" class="slidelink" onclick="giftiqueform.changeto(3)">Activities</button>
+                <button type="button" class="slidelink" onclick="giftiqueform.changeto(4)">Hobbies</button>
+            </div>
+            <div class="giftique-slider-frame">
+                <form>
+                    <div class="giftique-slider">
+                        <p>You are creating a(n) 
+                            <select name="occasion" id="occasion">
+                                <option value="null">occasion</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="birthday">Birthday</option>
+                                <option value="valentines">Valentines Day</option>
+                                <option value="null">just because</option> 
+                            </select> gift for your wonderful 
+                            <select name="relationship" id="relationship">
+                                <option value="null">relationship</option>
+                                <option value="Girlfriend">girlfriend</option>
+                                <option value="Wife">wife</option>
+                                <option value="Friend">friend</option>
+                            </select>, 
+                            <input type="text" class="giftique-form-text-input" id="recipient" placeholder="recipient" pattern="\w+"> and looking for gifts in the 
+                            <select name="pricerange" id="pricerange">
+                                <option value="null">price range</option>
+                                <option value="5-10">$5-$10</option>
+                                <option value="10-30">$10-$30</option>
+                                <option value="30-50">$30-$50</option>
+                                <option value="50-99999">$50+</option>
+                            </select> range.</p>
+                        <button type="button" class="giftique-continue" id="giftique-continue" onclick="giftiqueform.cont()">Continue</button>
+                    </div>
+                    <div class="giftique-slider">
+                        <p>Select a blank to fill in.<br/>
+                            <input type="radio" name="travelquestion" value="t1"> <span id="put-name">Recipient</span> and I dream to travel to __________ in the future.<br/>
+                            <input type="radio" name="travelquestion" value="t2"> <span id="put-name">Recipient</span> and I had the best time traveling to __________.<br/>
+                            <input type="radio" name="travelquestion" value="t3"> We travel to __________ regularly, our special home away from home.<br/>
+                            <br/>
+                            <input type="text" class="giftique-form-text-input" id="location" />
+                        </p>
+                        <button type="button" class="giftique-back" onclick="giftiqueform.back()">Back</button>
+                        <button type="button" class="giftique-continue" onclick="giftiqueform.cont()">Continue</button>
+                    </div>
+                    <div class="giftique-slider">
+                        <p>Select a blank to fill in.<br/>
+                            <input type="radio" name="fooddrinkquestion" value="f1"> For dinner we prefer __________.<br/>
+                            <input type="radio" name="fooddrinkquestion" value="f2"> Our drink of choice is __________.<br/>
+                            <input type="radio" name="fooddrinkquestion" value="f3"> <span id="put-name">Recipient</span>'s drink of choice is __________.<br/>
+                            <br/>
+                            <input type="text" class="giftique-form-text-input" id="fooddrink" />
+                        </p>
+                        <button type="button" class="giftique-back" onclick="giftiqueform.back()">Back</button>
+                        <button type="button" class="giftique-continue" onclick="giftiqueform.cont()">Continue</button>
+                    </div>
+                    <div class="giftique-slider">
+                        <p>Select a blank to fill in.<br/>
+                            <input type="radio" name="activityquestion" value="a1"> __________ is  an activity we'd love to try together.<br/>
+                            <input type="radio" name="activityquestion" value="a2"> We love doing __________ together every couple of weeks.<br/>
+                            <input type="radio" name="activityquestion" value="a3"> When we are feeling adventurous we __________.<br/>
+                            <br/>
+                            <input type="text" class="giftique-form-text-input" id="activity" />
+                        </p>
+                        <button type="button" class="giftique-back" onclick="giftiqueform.back()">Back</button>
+                        <button type="button" class="giftique-continue" onclick="giftiqueform.cont()">Continue</button>
+                    </div>
+                    <div class="giftique-slider">
+                        <p>Select a blank to fill in.<br/>
+                            <input type="radio" name="hobbyquestion" value="h1"> After a long week we spend time with each other by __________.<br/>
+                            <input type="radio" name="hobbyquestion" value="h2"> Our typical Saturday consists of __________.<br/>
+                            <input type="radio" name="hobbyquestion" value="h3"> If there was a blizzard outside and we were stuck in our house we would __________.<br/>
+                            <br/>
+                            <input type="text" class="giftique-form-text-input"  id="hobby" />
+                        </p>
+                        <button type="button" class="giftique-back" onclick="giftiqueform.back()">Back</button>
+                        <button type="button" class="giftique-continue" onclick="giftiqueform.finish()">Finish!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="location-results"></div>
+        <div id="fooddrink-results"></div>
+        <div id="activity-results"></div>
+        <div id="hobby-results"></div>
+    </body>
+</html>

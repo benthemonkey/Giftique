@@ -19,7 +19,7 @@ function(MenuView, QuestionView){
 		var giftique_router = new GiftiqueRouter();
 
 		giftique_router.on('route:showTravelQuestion', function(){
-			var question_view = new QuestionView('travel');
+			var question_view = new QuestionView();
 
 			question_view.render();
 		});

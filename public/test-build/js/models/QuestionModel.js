@@ -1,7 +1,13 @@
-define(['underscore','backbone'],function(_,Backbone){
+define([
+	'underscore',
+	'backbone'
+],function(_, Backbone){
 	var QuestionModel = Backbone.Model.extend({
 		defaults: {
-			type: "text"
+			type: "text",
+			template: "blanks_question",
+			content: ["Question is","missing."],
+			response: false
 		}
 	});
 

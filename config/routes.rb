@@ -13,5 +13,5 @@ Giftique::Application.routes.draw do
   #resources :users, :only => [:show, :index] do
   #  get 'invite', :on => :member
   #end
-  root :to => redirect('/test/')
+  root :to => redirect('/')
 end
