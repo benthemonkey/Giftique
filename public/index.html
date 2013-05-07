@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--width=device-width, -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- iPhone -->
+    <link href="img/apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon">
+    <link href="img/apple-touch-startup-image-320x460.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+
+    <!-- iPhone (Retina) -->
+    <link href="img/apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon">
+    <link href="img/apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+    <!-- iPhone 5 -->
+    <link href="img/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+    <!-- iPad -->
+    <link href="img/apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon">
+    <link href="img/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+    <link href="img/apple-touch-startup-image-748x1024.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+
+    <!-- iPad (Retina) -->
+    <link href="img/apple-touch-icon-144x144.png" sizes="144x144" rel="apple-touch-icon">
+    <link href="img/apple-touch-startup-image-1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+    <link href="img/apple-touch-startup-image-1496x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+	<title>Giftique.me</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+	<!--<link rel="stylesheet" href="css/jquery-jvectormap-1.2.2.css" />-->
+	<link rel="stylesheet" href="css/giftique.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="row-fluid">
+			<div class="span2" id="nav">
+				<div class="well well-small sidebar">
+					<a class="brand" href="#"><img src="img/giftiquemelogo.gif" /></a>
+					<ul class="nav nav-list">
+						<li class="nav-header">Tell us about her:</li>
+						<li><a href="#category/travel"><i class="icon-globe"></i> Travel</a></li>
+						<li><a href="#category/places"><i class="icon-road"></i> Places</a></li>
+						<li><a href="#category/food_drink"><i class="icon-glass"></i> Food/Drink</a></li>
+						<li><a href="#category/hobbies"><i class="icon-heart"></i> Hobbies</a></li>
+						<li><a href="#category/activities"><i class="icon-book"></i> Activities</a></li>
+						<li><a href="#category/art_entertainment"><i class="icon-film"></i> Art/Entertainment</a></li>
+						<li><a href="#category/all"><i class="icon-star"></i> Random</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="span7">
+				<div id="alert-container"></div>
+				<div id="main"></div>
+			</div>
+			<div class="span3">
+				<div class="well well-small sidebar">
+					<div class="text-center"><h4>Your Responses:</h4></div>
+					<div id="question-list-wrapper">
+						<img src="img/loading-grey.gif" width="100%"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="well well-small footer">
+			<div class="row-fluid">
+				<div class="span4">
+					<a href="https://twitter.com/GiftiqueMe" class="twitter-follow-button" data-show-count="false">Follow @GiftiqueMe</a>
+					<div class="fb-like" data-href="http://www.facebook.com/giftiqueme" data-send="true" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+				</div>
+				<div class="span5 pull-right text-right">
+					<p>Created as part of the NUVention: Web program at Northwestern University</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="fb-root"></div>
+	<script data-main="js/main" src="js/libs/require.min.js"></script>
+</body>
+</html>
