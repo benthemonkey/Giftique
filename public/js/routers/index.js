@@ -3,7 +3,10 @@ define(['marionette'],function(marionette) {
 
   return marionette.AppRouter.extend({
     appRoutes:{
-      'category/:category': 'getQuestion'
+      'category/:category': 'getCategory',
+      'edit/:id': 'getId',
+      'results': 'getResults',
+      '*action' : 'home'
     }
   });
 

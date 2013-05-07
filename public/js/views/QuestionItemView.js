@@ -1,39 +1,34 @@
-/*global define*/
-
 define(['marionette','templates'], function (Marionette,templates) {
-  "use strict";
+	"use strict";
 
-  return Marionette.CompositeView.extend({
-    tagName : 'li',
-    template : templates.questionItemView,
+	return Marionette.CompositeView.extend({
+		tagName : 'li',
+		template : templates.questionItemView,
 
-    ui : {
-    },
+		ui : {
+		},
 
-    events : {
-      'click .clearAnswer' : 'clearAnswer',
-      'click .edit'    : 'edit'
-    },
+		events : {
+			'click .clearAnswer' : 'clearAnswer',
+			'click .edit'    : 'edit'
+		},
 
-    initialize : function() {
-      this.listenTo(this.model, 'change', this.render, this);
-    },
+		initialize : function() {
+			this.listenTo(this.model, 'change', this.render, this);
+		},
 
-    onRender : function() {
-      this.$el.removeClass('hide answered');
-      if (this.model.get('answered')) this.$el.addClass('answered');
-      else this.$el.addClass('hide');
-    },
+		onRender : function() {
+			this.$el.removeClass('hide answered');
+			if (this.model.get('answered')) this.$el.addClass('answered');
+			else this.$el.addClass('hide');
+		},
 
-    destroy : function() {
-      this.model.destroy();
-    },
+		destroy : function() {
+			this.model.destroy();
+		},
 
-    clearAnswer : function() {
-      this.model.set('answered', false).save();
-    },
-
-    edit : function() {
-    }
-  });
+		clearAnswer : function() {
+			this.model.set('answered', false).save();
+		}
+	});
 });

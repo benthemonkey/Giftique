@@ -1,4 +1,3 @@
-
 define(['backbone','libs/backbone.localStorage'],function(Backbone){
   "use strict";
 

@@ -5,7 +5,9 @@ require.config({
     marionette : 'libs/backbone.marionette.min',
     jquery     : 'libs/jquery.min',
     jquery_ui  : 'libs/jquery-ui.min',
-    tpl        : 'libs/tpl'
+    bootstrap  : 'libs/bootstrap.min',
+    tpl        : 'libs/tpl',
+    ga         : 'libs/3rdParty'
   },
   shim : {
     'libs/backbone.localStorage' : ['backbone'],
@@ -19,14 +21,23 @@ require.config({
     marionette : {
       exports : 'Backbone.Marionette',
       deps : ['backbone']
+    },
+    jquery_ui : {
+      deps : ['jquery']
+    },
+    bootstrap : {
+      deps : ['jquery']
+    },
+    ga : {
+      exports : '_gaq'
     }
   },
-  deps : ['jquery','underscore']
+  deps : ['jquery','underscore','ga']
 });
 
-require(['app','backbone','routers/index','controllers/index'],function(app,Backbone,Router,Controller){
+require(['app','backbone','routers/index','controllers/index','bootstrap','jquery_ui'],function(app,Backbone,Router,Controller){
   app.start();
-  new Router({
+  app.router = new Router({
     controller : Controller
   });
   Backbone.history.start();
