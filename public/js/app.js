@@ -331,27 +331,19 @@ define(
       if(search.length > 0){ app.etsySearch(search); }
 
       app.main.show(productLayout);
-
-      /*productLayout.travel.show(new ProductListCompositeView({ collection: productList.travel }));
-      productLayout.places.show(new ProductListCompositeView({ collection: productList.places }));
-      productLayout.food_drink.show(new ProductListCompositeView({ collection: productList.food_drink }));
-      productLayout.hobbies.show(new ProductListCompositeView({ collection: productList.hobbies }));
-      productLayout.activities.show(new ProductListCompositeView({ collection: productList.activities }));
-      productLayout.art_entertainment.show(new ProductListCompositeView({ collection: productList.art_entertainment }));*/
     });
 
-    vent.on('hideUnanswered', function(){
+    vent.on('showResults', function(){
       var answeredCategories = questionList.getAnswered().map(function(question){ return question.get("category"); }),
       cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
-      hideUnanswered = function(cat){
-        if(answeredCategories.indexOf(cat) == -1){
-          $("#" + cat.replace('_','-') + "-products").fadeOut("slow");
-        }else{
+      showResults = function(cat){
+        if(answeredCategories.indexOf(cat) != -1){
+          $("#" + cat.replace('_','-') + "-products").fadeIn();
           productLayout[cat].show(new ProductListCompositeView({ collection: productList[cat] }));
         }
       };
 
-      cats.forEach(hideUnanswered);
+      cats.forEach(showResults);
     });
 
     app.etsySearch = function(ajax_list) {
@@ -387,16 +379,18 @@ define(
         dataType: "jsonp",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
-          if (data.ok && data.count > 0) {
-            var products = data.results.map(newProduct);
+          if (data.ok) {
+            if(data.count > 0){
+              var products = data.results.map(newProduct);
 
-            productList[search.category].add(products);
+              productList[search.category].add(products);
+            }
 
             if(ajax_list.length > 0){
               app.etsySearch(ajax_list);
             }
           } else {
-            if(!data.ok){ alert(data.error); }
+            alert(data.error);
           }
         },
         error: function(result){console.log(result);}
