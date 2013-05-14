@@ -1,7 +1,7 @@
-define(['backbone','models/Product'],function(Backbone,Product) {
+define(['parse','models/Product'],function(Parse,Product) {
 	'use strict';
 
-	return Backbone.Collection.extend({
+	return Parse.Collection.extend({
 		model: Product,
 
 		comparator: function(product1,product2){
@@ -15,7 +15,17 @@ define(['backbone','models/Product'],function(Backbone,Product) {
 		},
 
 		getCategory: function(category){
-			return this.where({category: category});
+			query = new Parse.Query(this.model);
+			query.equalTo('category',category);
+			query.find({
+				success: function(results){
+					return results;
+				},
+				error: function(error){
+					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
+					return;
+				}
+			});
 		}
 	});
 

@@ -1,28 +1,7 @@
+/* Pagewide styles */
+
 body{
 	background: url('../img/grey_wash_wall.png');
-}
-
-.question{
-	padding: 40px 20px;
-	background-color: white;
-	background-color: rgba(255,255,255,.8);
-	/*height: 480px;*/
-}
-
-.question-form{
-	background-size: cover;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-}
-
-.products{
-	max-height: 250px;
-	overflow-y: scroll;
-}
-
-.form-actions{
-	margin-top: 0;
 }
 
 .container{
@@ -35,6 +14,76 @@ body{
      -webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
         -moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
              box-shadow: 7px 7px 10px rgba(50, 50, 50, 1);
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+/* Sidebar */
+
+.nav-list{
+	padding: 5px 10px;
+}
+
+.nav-list > li > a{
+	margin-left: -10px;
+	margin-right: -10px;
+	padding: 0 5px;
+}
+
+span.label{
+	float: right;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+.sidebar{
+	padding: 5px 0;
+	margin-bottom: 10px;
+}
+
+/* Questions */
+
+.question{
+	padding: 40px 20px;
+	background-color: white;
+	background-color: rgba(255,255,255,.8);
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.question-form{
+	background-size: cover;
+	border-top-right-radius: 4px;
+}
+
+input.line {
+    border: none;
+    border-radius: 0;
+    color: #333;
+    background: transparent;
+    border-bottom: 1px dotted black;
+    padding: 10px 0 2px;
+    margin-bottom: 8px;
+    font-size: 18pt;
+}
+ 
+input.line:focus {
+    outline: none;
+    border-color: #51CBEE;
+}
+
+.form-actions{
+	margin-top: 0;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.products{
+	max-height: 250px;
+	overflow-y: scroll;
 }
 
 #question-list{
@@ -73,16 +122,7 @@ body{
 	padding: 0;
 }
 
-.nav-list{
-	padding-left: 0;
-	padding-right: 0;
-}
-
-.nav-list > li > a{
-	margin-left: 0;
-	margin-right: -10px;
-	padding: 0 5px;
-}
+/* Footer */
 
 .footer{
 	margin-bottom: 0;
@@ -90,21 +130,4 @@ body{
 	border-top-left-radius: 0;
 	font-size: 12px;
 	line-height: 16px;
-}
-
-input.line {
-    display: inline;
-    border: none;
-    border-radius: 0;
-    color: #333;
-    background: transparent;
-    border-bottom: 1px dotted black;
-    padding: 10px 0 2px;
-    margin-bottom: 8px;
-    font-size: 18pt;
-}
- 
-input.line:focus {
-    outline: none;
-    border-color: #51CBEE;
 }
