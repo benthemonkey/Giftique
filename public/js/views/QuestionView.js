@@ -1,4 +1,4 @@
-define(['marionette','templates','vent'], function (Marionette,templates,vent) {
+define(['marionette','parse','templates','vent'], function (Marionette,Parse,templates,vent) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -14,22 +14,11 @@ define(['marionette','templates','vent'], function (Marionette,templates,vent) {
       'click .shuffle' : 'shuffleQuestion'
     },
 
-    initialize : function(){
-      this.listenTo(this.model, 'change', this.render, this);
-    },
-
     onRender: function(){
       if(this.model.get('background')){
         this.ui.form.css("background-image","url('img/"+this.model.get("background")+"')");
       }else{
         this.ui.form.css("background-image","none");
-      }
-
-      var answered = this.model.get('answered');
-      if(answered){
-        for(var i=0; i < answered.length; i++){
-          this.ui.input.eq(i).val(answered[i]);
-        }
       }
     },
 
@@ -43,13 +32,26 @@ define(['marionette','templates','vent'], function (Marionette,templates,vent) {
       });
 
       if(answer.length > 0){
-        this.model.set('answered', answer).save();
-        vent.trigger('getQuestion:category', document.URL.split("#")[1].substr(9));
+        //this.model.set('answered', answer).save();
+        vent.trigger('submitAnswer', this.model, answer);
+
+        var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment','all'],
+        cat = document.URL.split("#")[1].substr(9),
+        ind = cats.indexOf(cat);
+        if(ind != -1){
+          if(ind == 5){
+            vent.trigger('getResults');
+          }else if (ind == 6){
+            vent.trigger('getQuestion:category','all');
+          }else{
+            vent.trigger('getQuestion:category', cats[ind+1]);
+          }
+        }
       }
     },
 
     shuffleQuestion : function() {
-      vent.trigger('getQuestion:category', document.URL.split("#")[1].substr(9));
+      vent.trigger('getQuestion:category', document.URL.split("#")[1].substr(9),this.model.id);
     }
   });
 });
