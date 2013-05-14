@@ -5,7 +5,8 @@ define(['marionette'],function(marionette) {
     appRoutes:{
       'category/:category': 'getCategory',
       'edit/:id': 'getId',
-      'results': 'getResults',
+      'results' : 'getResults',
+      'tos'     : 'tos',
       '*action' : 'home'
     }
   });

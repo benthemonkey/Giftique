@@ -23,11 +23,7 @@
 			<h2>
 				<%= content[0] %>
 				&nbsp;
-				<input type="text" class="line span5 myinput" placeholder="<%= options.placeholder %>" required 
-					<% if(answered && answered[0].length > 0){ %>
-						value="<%= answered[0] %>"
-					<% } %>
-					/>
+				<input type="text" class="line span5 myinput" placeholder="<%= options.placeholder %>" required />
 				&nbsp;
 				<%= content[1] %>
 			</h2>
@@ -37,11 +33,7 @@
 			</h2>
 			<p>
 				<div class="text-right">
-					<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required 
-						<% if(answered && answered[0].length > 0){ %>
-							value="<%= answered[0] %>"
-						<% } %>
-					/>
+					<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
 				</div>
 			</p>
 		<% }else{ %>

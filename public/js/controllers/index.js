@@ -6,10 +6,13 @@ define(['vent'], function (vent) {
 			vent.trigger('getQuestion:category', param.trim() || '');
 		},
 		getId : function(param) {
-			vent.trigger('getQuestion:id', parseInt(param.trim(),10) || '');
+			vent.trigger('getQuestion:id', param.trim() || '');
 		},
 		getResults : function() {
 			vent.trigger('questionList:getResults');
+		},
+		tos : function() {
+			vent.trigger('tos');
 		},
 		home : function() {
 			vent.trigger('home');

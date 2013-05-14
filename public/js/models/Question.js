@@ -1,8 +1,9 @@
-define(['backbone','libs/backbone.localStorage'],function(Backbone){
+define(['parse'],function(Parse){
   "use strict";
 
-  return Backbone.Model.extend({
-    localStorage: new Backbone.LocalStorage('giftique'),
+  return Parse.Object.extend({
+    className: "Question",
+
     defaults: {
       type      : 'single-blank',
       category  : 'travel',

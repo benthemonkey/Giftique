@@ -12,7 +12,7 @@
 //facebook for parse start
 window.fbAsyncInit = function() {
 	Parse.FacebookUtils.init({
-		appId      : '128520183979985', // Facebook App ID REAL: 128520183979985, DEV: 140050132852482
+		appId      : '140050132852482', // Facebook App ID REAL: 128520183979985, DEV: 140050132852482
 		//channelUrl : '//dev.giftique.me/channel.html', // Channel File
 		status     : false, // check login status
 		cookie     : true, // enable cookies to allow Parse to access the session
@@ -27,7 +27,7 @@ window.fbAsyncInit = function() {
 	if (d.getElementById(id)) return;
 	js = d.createElement(s);
 	js.id = id;
-	js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=128520183979985"; //REAL: 128520183979985. DEV: 140050132852482
+	js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=140050132852482"; //REAL: 128520183979985. DEV: 140050132852482
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 

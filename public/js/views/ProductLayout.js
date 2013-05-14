@@ -5,7 +5,7 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 		template: templates.productListLayout,
 
 		onShow: function(){
-			vent.trigger('hideUnanswered');
+			vent.trigger('showResults');
 		},
 
 		regions: {

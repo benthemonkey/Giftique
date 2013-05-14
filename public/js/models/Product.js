@@ -1,17 +1,16 @@
-define(['backbone'],function(Backbone){
+define(['parse'],function(Parse){
   "use strict";
 
-  return Backbone.Model.extend({
+  return Parse.Object.extend({
+    className: "Product",
+
     defaults: {
-      title     : 'Missing',
-      category  : 'none',
-      questionId: -1,
-      term      : 'missingTerm',
-      query     : 'missingQuery',
-      url       : 'missingURL',
-      img       : 'missingIMG',
-      views     : 0,
-      price     : 0
+      category   : 'missingCategory',
+      questionId : -1,
+      term       : 'missingTerm',
+      query      : 'missingQuery',
+      status     : 0,
+      etsy_item  : null
     }
   });
 
