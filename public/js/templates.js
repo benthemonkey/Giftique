@@ -6,11 +6,12 @@ define(function(require){
 	sidebar						: require('tpl!templates/sidebar.tpl'),
 	tos							: require('tpl!templates/tos.tpl'),
 	questionView				: require('tpl!templates/questionView.tpl'),
-	questionItemView			: require('tpl!templates/questionItemView.tpl'),
-	questionListCompositeView	: require('tpl!templates/questionListCompositeView.tpl'),
+	answerItemView				: require('tpl!templates/answerItemView.tpl'),
+	answerListCompositeView		: require('tpl!templates/answerListCompositeView.tpl'),
 	productItemView				: require('tpl!templates/productItemView.tpl'),
 	productListLayout			: require('tpl!templates/productListLayout.tpl'),
-	userView					: require('tpl!templates/userView.tpl')
+	userLayout					: require('tpl!templates/userLayout.tpl'),
+	accountView					: require('tpl!templates/accountView.tpl')
   };
 });
 

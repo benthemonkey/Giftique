@@ -9,7 +9,11 @@ define(['vent'], function (vent) {
 			vent.trigger('getQuestion:id', param.trim() || '');
 		},
 		getResults : function() {
-			vent.trigger('questionList:getResults');
+			console.log("fired get results");
+			vent.trigger('answerList:getResults');
+		},
+		account : function() {
+			vent.trigger('account');
 		},
 		tos : function() {
 			vent.trigger('tos');

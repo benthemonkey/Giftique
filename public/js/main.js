@@ -43,10 +43,8 @@ require.config({
 
 require(['app','backbone','routers/index','controllers/index','parse','ga','bootstrap','jquery_ui'],function(app,Backbone,Router,Controller,Parse,_gaq){
 
-  Parse.initialize("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
-  app.start();
-  app.router = new Router({
-    controller : Controller
-  });
-  Backbone.history.start();
+  Parse.initialize("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//Prod: ("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
+
+  //need to load questions before doing anything else.
+  app.loadQuestions(Router, Controller);
 });
