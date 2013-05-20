@@ -1,12 +1,12 @@
 /* Pagewide styles */
 
 body{
-	background: url('../img/grey_wash_wall.png');
+	background: url('http://commondatastorage.googleapis.com/giftiqueme/grey_wash_wall.png');
 }
 
-.container{
-	max-width: 1000px;
-	margin-top: 10px;
+.page{
+	max-width: 800px;
+	margin: 20px auto;
 	background-color: white;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
@@ -18,6 +18,23 @@ body{
 
 .pointer{
 	cursor: pointer;
+}
+
+.exclaim-container{
+	display: inline;
+	position: absolute;
+}
+
+.exclaim{
+	display: none;
+}
+
+#content{
+	margin: 0 20px 20px;
+}
+
+.navbar .brand{
+	padding: 5px 20px;
 }
 
 /* Sidebar */
@@ -49,21 +66,29 @@ span.label{
 	padding: 40px 20px;
 	background-color: white;
 	background-color: rgba(255,255,255,.8);
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+     -moz-border-top-right-radius: 4px;
+          border-top-right-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+     -moz-border-top-left-radius: 4px;
+          border-top-left-radius: 4px;
+}
+
+.question > h3{
+	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 .question-form{
 	background-size: cover;
-	border-top-right-radius: 4px;
+	border-radius: 4px;
 }
 
 input.line {
     border: none;
     border-radius: 0;
     color: #333;
-    background: transparent;
+    background: white;
     border-bottom: 1px dotted black;
     padding: 10px 0 2px;
     margin-bottom: 8px;
@@ -86,22 +111,23 @@ input.line:focus {
 	overflow-y: scroll;
 }
 
-#question-list{
+.answer-list{
 	list-style: none;
 	margin-left: 0;
 	margin-right: 0;
 }
 
-#question-list > li{
-	height: 22px;
+.answer-list > li{
+	height: 24px;
 }
 
 .intro{
-	width: 300px;
-	height: 286px;
+	/*width: 300px;
+	height: 286px;*/
 	border: 1px solid grey;
 	margin: 10px auto;
-	background: url('../img/meet-robbie.png') no-repeat center center;
+	padding: 23% 0;
+	background: url('http://commondatastorage.googleapis.com/giftiqueme/meet-robbie.png') no-repeat center center;
 	background-size: 100%;
 }
 
@@ -115,6 +141,15 @@ input.line:focus {
 	cursor: pointer;
 	opacity:0.9;
 	filter: alpha(opacity=90);
+}
+
+.carousel{
+	width: 450px;
+}
+
+.item > img{
+	width: 450px;
+	height: 300px;
 }
 
 .btn-link{

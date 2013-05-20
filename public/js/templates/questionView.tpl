@@ -20,17 +20,17 @@
 	<div class="question">
 		<h4><%= categoryName(category) %> Question: <%= description %></h4>
 		<% if (type == "single-blank"){ %>
-			<h2>
+			<h3>
 				<%= content[0] %>
 				&nbsp;
-				<input type="text" class="line span5 myinput" placeholder="<%= options.placeholder %>" required />
+				<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
 				&nbsp;
 				<%= content[1] %>
-			</h2>
+			</h3>
 		<% }else if(type == "short-answer"){ %>
-			<h2>
+			<h3>
 				<%= content %>
-			</h2>
+			</h3>
 			<p>
 				<div class="text-right">
 					<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
