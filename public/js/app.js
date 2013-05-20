@@ -1,4 +1,3 @@
-/*global $*/
 define(
 	[       'marionette','vent', 'templates', 'views', 'collections/AnswerList', 'collections/QuestionList','collections/ProductList', 'models/Product'],
 	function(Marionette,  vent,   templates,   views,               AnswerList,               QuestionList,              ProductList,          Product){
