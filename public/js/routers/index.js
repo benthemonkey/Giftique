@@ -6,6 +6,7 @@ define(['marionette'],function(marionette) {
       'category/:category': 'getCategory',
       'edit/:id': 'getId',
       'results' : 'getResults',
+      'account' : 'account',
       'tos'     : 'tos',
       '*action' : 'home'
     }
