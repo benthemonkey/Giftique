@@ -5,12 +5,17 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 		template: templates.userLayout,
 
 		onShow: function(){
+			$("#account-btn").addClass("active");
 			vent.trigger("temp");
 		},
 
 		regions: {
 			account: "#account",
 			answers: "#answers"
+		},
+
+		onClose: function(){
+			$("#account-btn").removeClass("active");
 		}
 	});
 });

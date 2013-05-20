@@ -3,7 +3,7 @@ define(function(require){
   return {
 	blank: require('tpl!templates/blankTemplate.tpl'),
 	homeView					: require('tpl!templates/homeView.tpl'),
-	sidebar						: require('tpl!templates/sidebar.tpl'),
+	navbar						: require('tpl!templates/navbar.tpl'),
 	tos							: require('tpl!templates/tos.tpl'),
 	questionView				: require('tpl!templates/questionView.tpl'),
 	answerItemView				: require('tpl!templates/answerItemView.tpl'),

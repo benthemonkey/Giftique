@@ -18,9 +18,20 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
       this.listenTo(this.model, 'change', this.render);
     },
 
+    onShow: function(){
+      $("#session-nav").find(".dropdown").addClass("active");
+      $("#"+this.model.get("category")+"-btn").addClass("active");
+
+      if(this.model.get("answered")){
+        this.ui.input.val(this.model.get("answered")[0]);
+        $(".shuffle").addClass("hide");
+      }
+    },
+
     onRender: function(){
       if(this.model.get("answered")){
         this.ui.input.val(this.model.get("answered")[0]);
+        $(".shuffle").addClass("hide");
       }
 
       if(this.model.get('background')){
@@ -28,6 +39,11 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
       }else{
         this.ui.form.css("background-image","none");
       }
+    },
+
+    onClose: function(){
+      $('.nav > li').removeClass("active");
+      $("#categories > li").removeClass("active");
     },
 
     submitAnswer : function() {
@@ -40,8 +56,6 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
       });
 
       if(answer.length > 0){
-        this.model.set('answered', answer);
-
         var ans = new Answer({
           'question2' : this.model.id,
           'description' : this.model.get("description"),
@@ -50,7 +64,13 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
           'user' : Parse.User.current()
         });
 
-        vent.trigger("submitAnswer", ans);
+        if(this.model.get('answered')){
+          vent.trigger("submitNewAnswer", ans);
+        }else{
+          vent.trigger("submitAnswer", ans);
+        }
+
+        this.model.set('answered', answer);
 
         var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment','all'],
         cat = document.URL.split("#")[1].substr(9),

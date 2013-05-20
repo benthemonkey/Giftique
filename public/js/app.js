@@ -6,7 +6,6 @@ define(
 
 		var app = new Marionette.Application(),
 		user,
-		anonymous_user = true,
 		productList = {
 			travel           : new ProductList(),
 			places           : new ProductList(),
@@ -17,17 +16,17 @@ define(
 		},
 		productLayout = new views.ProductLayout(),
 		questionList = new QuestionList(),
-		sidebarView = new views.SidebarView({ collection: questionList }),
+		navbarView = new views.NavbarView({ collection: questionList, model: user }),
 		answerList = new AnswerList();
 
 		app.addRegions({
-			sidebar: "#sidebar",
+			navbar: "#navbar",
 			main   : views.MainRegion,
 			list   : '#question-list-wrapper'
 		});
 
 		//dont start app until questions have loaded
-		app.loadQuestions = function(Router, Controller){
+		app.init = function(Router, Controller){
 			var query = new Parse.Query(questionList.model);
 			query.find({
 				success: function(results){
@@ -36,12 +35,19 @@ define(
 						atts.id = question.id;
 						return atts;
 					}));
+
 					app.start();
 					console.log("started app");
 					app.router = new Router({
 						controller : Controller
 					});
-					Backbone.history.start();
+
+					user = Parse.User.current();
+					if(user){
+						vent.trigger("user:logIn",function(){Backbone.history.start();});
+					}else{
+						Backbone.history.start();
+					}
 				},
 				error: function(error){
 					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
@@ -50,46 +56,7 @@ define(
 		};
 
 		app.addInitializer(function(){
-			$('#meet-robbie').on('shown', function(){
-				$('body').css('overflow', 'hidden');
-			}).on('hidden', function(){
-				$('body').css('overflow', 'auto');
-			});
-
-			app.sidebar.show(sidebarView);
-
-			//User already signed in
-			if(Parse.User.current()){
-				vent.trigger("user:logIn");
-			}else{
-				//User not signed in, check for anonymous user
-				if(localStorage['giftique_user']){
-					var username = localStorage['giftique_user'];
-
-					Parse.User.logIn(username,"temp",{
-						success: function(user){
-							console.log('successfully logged into previous anonymous session');
-							vent.trigger("user:logIn");
-						},
-						error: function(error){
-							vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
-						}
-					});
-				}else{
-					//no anonymous user, make one
-					var newUser = "anon" + Math.random().toString(36).substr(2,16);
-					localStorage['giftique_user'] = newUser;
-
-					Parse.User.signUp(newUser, "temp", { ACL: new Parse.ACL() },{
-						success: function(user){
-							console.log('you are now in an anonymous user session');
-						},
-						error: function(error){
-							vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
-						}
-					});
-				}
-			}
+			app.navbar.show(navbarView);
 		});
 
 		vent.on("temp", function(){
@@ -103,21 +70,14 @@ define(
 		});
 
 		vent.on('home', function() {
-			/*$('.nav-large').addClass("hide");
-			$('.nav-small').removeClass("hide");*/
-			$('.nav > li').removeClass("active");
-			$('#home').addClass("active");
+			app.main.show(new views.HomeView());
+		});
 
-			user = Parse.User.current();
-
-			if(user && user.get("username").substr(0,4) != "anon"){
-				var userLayout = new views.UserLayout();
-				app.main.show(userLayout);
-				userLayout.account.show(new views.AccountView({ model: user }));
-				userLayout.answers.show(new views.AnswerListCompositeView({ collection: answerList }));
-			}else{
-				app.main.show(new (Marionette.ItemView.extend({ template: templates.homeView }))());
-			}
+		vent.on('account', function(){
+			var userLayout = new views.UserLayout();
+			app.main.show(userLayout);
+			userLayout.account.show(new views.AccountView({ model: user }));
+			userLayout.answers.show(new views.AnswerListCompositeView({ collection: answerList }));
 		});
 
 		vent.on('tos', function() {
@@ -137,7 +97,7 @@ define(
 						questionList.get(answer.get("question2")).set({"answered": answer.get("answer")});
 					});
 					console.log("added answerlist");
-					sidebarView.render();
+					navbarView.render();
 					if(callback) (callback)(answerList);
 				},
 				error: function(error){
@@ -155,7 +115,38 @@ define(
 			for(var prod in productList){
 				productList[prod].reset();
 			}
-			sidebarView.render();
+			questionList.forEach(function(question){ question.set("answered", false); });
+			navbarView.render();
+
+			app.router.navigate("#");
+		});
+
+		vent.on('submitNewAnswer', function(answer){
+			var user = Parse.User.current(),
+			query = new Parse.Query(Product);
+
+			query.equalTo("user",user);
+			query.equalTo("questionId",answer.get("question2"));
+			query.find({
+				success: function(results){
+					results.forEach(function(product){
+						product.set("status",3).save();
+					});
+				},
+				error: function(error){
+					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
+				}
+			});
+
+			var question2_list = answerList.pluck("question2"),
+			remove_ans = answerList.at(question2_list.indexOf(answer.get("question2")));
+			answerList.remove(remove_ans);
+			remove_ans.destroy();
+
+			vent.trigger("submitAnswer", answer);
+
+			vent.trigger("account");
+			app.router.navigate("#account");
 		});
 
 		vent.on('submitAnswer',function(answer){
@@ -163,25 +154,15 @@ define(
 			answerList.add(answer);
 			console.log(answerList);
 
-			var appendSearch = function(answer){
-				var question = questionList.get(answer.get("question2")),
-				terms = question.get("appendTerms").map(function(term){
-					return {
-						qid: question.id,
-						category: question.get("category"),
-						term: term,
-						query: answer.get("answer")[0] + " " + term
-					};
-				});
-				app.etsySearch(terms);
-			};
+			app.appendSearch(answer);
+		});
 
-			appendSearch(answer);
+		vent.on("answerList:remove", function(answer){
+			answerList.remove(answer);
+			questionList.get(answer.get("question2")).set({"answered": false});
 		});
 
 		vent.on('getQuestion:category', function(_category, _currentQuestionId) {
-			$('.nav > li').removeClass("active");
-			$("#"+_category).addClass("active");
 			app.router.navigate('category/'+_category);
 
 			var list = questionList.getCategory(_category, _currentQuestionId),
@@ -209,32 +190,56 @@ define(
 		});
 
 		vent.on('answerList:getResults', function(){
-			$('.nav > li').removeClass("active");
-			$('#results').addClass("active");
+			for(var prod in productList){
+				productList[prod].reset();
+			}
+			app.main.show(productLayout);
 
 			var user = Parse.User.current(),
-			query = new Parse.Query(Product);
+			queryCount = 0,
+			cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
+			getResults = function(cat){
+				var query = new Parse.Query(Product);
 
-			query.equalTo('user',user);
-			query.find({
-				success: function(results){
-					results.map(function(product){
-						if(productList[product.get('category')].isUniqueListingId(product)) productList[product.get('category')].add(product);
-					});
-					app.main.show(productLayout);
+				query.equalTo('user',user);
+				query.lessThan("status",2);
+				query.equalTo("category",cat);
+				query.descending("views");
+				query.find({
+					success: function(results){
+						var existing_ids = [];
+
+						results.map(function(product){
+							var listing_id = product.get("etsy_item").listing_id;
+
+							if(existing_ids.indexOf(listing_id) == -1){
+								productList[cat].add(product);
+								existing_ids.push(listing_id);
+							}
+						});
+						queryCount++;
+						checkQueryCount();
+					}
+				});
+			},
+			checkQueryCount = function(){
+				if(queryCount == 6){
+					//app.main.show(productLayout);
 					vent.trigger("showResults");
 				}
-			});
+			};
+
+			cats.forEach(getResults);
 		});
 
 		vent.on('showResults', function(){
-			var answeredCategories = answerList.pluck("category"),
-			cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
+			//var answeredCategories = answerList.pluck("category"),
+			var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
 			showResults = function(cat){
-				if(answeredCategories.indexOf(cat) != -1){
-					$("#" + cat.replace('_','-') + "-products").fadeIn();
+				//if(answeredCategories.indexOf(cat) != -1){
+					//$("#" + cat.replace('_','-') + "-products").fadeIn();
 					productLayout[cat].show(new views.ProductListCompositeView({ collection: productList[cat] }));
-				}
+				//}
 			};
 
 			cats.forEach(showResults);
@@ -245,6 +250,19 @@ define(
 				.addClass("alert alert-"+kind)
 				.appendTo("#alert-container");
 		});
+
+		app.appendSearch = function(answer){
+			var question = questionList.get(answer.get("question2")),
+			terms = question.get("appendTerms").map(function(term){
+				return {
+					qid: question.id,
+					category: question.get("category"),
+					term: term,
+					query: answer.get("answer")[0] + " " + term
+				};
+			});
+			app.etsySearch(terms);
+		};
 
 		app.etsySearch = function(ajax_list) {
 			var search = ajax_list.shift(),
@@ -258,6 +276,7 @@ define(
 					'questionId': search.qid,
 					'term'      : search.term,
 					'query'     : search.query,
+					'etsy_views': item.views,
 					'etsy_item' : {
 						'image'					: item.Images[0].url_170x135,
 						'category_path' : item.category_path,
@@ -270,7 +289,7 @@ define(
 					}
 				}).save({
 					success: function(){},
-					error: function(a,err){ console.log(err); alert("error adding product"); }
+					error: function(a,err){ console.log(err + "\n error adding product"); }
 				});
 			};
 
@@ -298,7 +317,8 @@ define(
 						if(ajax_list.length > 0){
 							app.etsySearch(ajax_list);
 						}else{
-							vent.trigger("showResults");
+							$('#results-btn').find('.badge').show('bounce','slow');
+							//vent.trigger("showResults");
 						}
 					} else {
 						alert(data.error);

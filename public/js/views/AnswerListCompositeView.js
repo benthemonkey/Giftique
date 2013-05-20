@@ -13,7 +13,7 @@ define(['marionette','templates','vent','views/AnswerItemView'], function (Mario
     },
 
 
-    onShow: function(){
+    onRender: function(){
       if(this.collection.length > 0){
         $('#empty-list').hide();
         $('#get-results').removeAttr("disabled").attr("href","#results");

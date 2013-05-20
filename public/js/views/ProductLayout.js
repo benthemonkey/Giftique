@@ -5,7 +5,8 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 		template: templates.productListLayout,
 
 		onShow: function(){
-			//vent.trigger('showResults');
+			$("#results-btn").addClass("active");
+			$('#results-btn').find('.badge').fadeOut();
 		},
 
 		regions: {
@@ -15,6 +16,10 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 			hobbies: "#hobbies-products-list",
 			activities: "#activities-products-list",
 			art_entertainment: "#art-entertainment-products-list"
+		},
+
+		onClose: function(){
+			$('#results-btn').removeClass("active");
 		}
 	});
 });

@@ -7,11 +7,11 @@
 		<li id="home">
 			<a href="#"><i class="icon-home"></i> Home</a>
 		</li>
-		<li id="results-btn" class="hide">
+		<li id="results" class="hide">
 			<a href="#results"><i class="icon-gift"></i> Get Suggestions</a>
 		</li>
 		<li class="nav-header nav-large">Tell us about her:</li>
-		<li id="travel-btn"><a href="#category/travel">
+		<li id="travel"><a href="#category/travel">
 			<i class="icon-globe"></i> Travel <span class="label hide"></span>
 		</a></li>
 		<li id="places"><a href="#category/places">

@@ -12,12 +12,6 @@ define(['parse','models/Product'],function(Parse,Product) {
 			}else{
 				return 0;
 			}
-		},
-
-		isUniqueListingId: function(product){
-			var existing_ids = this.pluck("etsy_item").map(function(etsy_item){ return etsy_item.listing_id; });
-
-			return existing_ids.indexOf(product.get("etsy_item").listing_id) == -1;
 		}
 	});
 

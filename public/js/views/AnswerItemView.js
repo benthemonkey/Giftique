@@ -1,4 +1,4 @@
-define(['marionette','templates'], function (Marionette,templates) {
+define(['marionette','templates','vent'], function (Marionette,templates,vent) {
 	"use strict";
 
 	return Marionette.CompositeView.extend({
@@ -9,17 +9,17 @@ define(['marionette','templates'], function (Marionette,templates) {
 		},
 
 		events : {
-			'click .clearAnswer' : 'destroy',
+			'click .clearAnswer' : 'removeAnswer',
 			'click .edit'    : 'edit'
 		},
 
-		initialize : function() {
+		/*initialize : function() {
 			this.listenTo(this.model, 'change', this.render, this);
-		},
+		},*/
 
-		destroy : function() {
+		removeAnswer : function() {
 			this.model.set("user",null).save();
-			this.model.destroy();
+			vent.trigger("answerList:remove",this.model);
 		}
 	});
 });

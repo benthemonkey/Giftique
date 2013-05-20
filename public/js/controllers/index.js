@@ -3,14 +3,26 @@ define(['vent'], function (vent) {
 
 	return {
 		getCategory : function(param) {
-			vent.trigger('getQuestion:category', param.trim() || '');
+			if(Parse.User.current()){
+				vent.trigger('getQuestion:category', param.trim() || '');
+			}else{
+				this.noLogIn();
+			}
 		},
 		getId : function(param) {
-			vent.trigger('getQuestion:id', param.trim() || '');
+			if(Parse.User.current()){
+				vent.trigger('getQuestion:id', param.trim() || '');
+			}else{
+				this.noLogIn();
+			}
 		},
 		getResults : function() {
-			console.log("fired get results");
-			vent.trigger('answerList:getResults');
+			if(Parse.User.current()){
+				console.log("fired get results");
+				vent.trigger('answerList:getResults');
+			}else{
+				this.noLogIn();
+			}
 		},
 		account : function() {
 			vent.trigger('account');
@@ -19,6 +31,10 @@ define(['vent'], function (vent) {
 			vent.trigger('tos');
 		},
 		home : function() {
+			vent.trigger('home');
+		},
+		noLogIn : function(){
+			vent.trigger('appendAlert',"No user session detected. Try logging in.","error");
 			vent.trigger('home');
 		}
 	};
