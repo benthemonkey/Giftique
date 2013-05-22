@@ -27,7 +27,7 @@ define(['marionette'], function(Marionette){
       return;
     }
       var that = this;
-      view.$el.hide("slide",{direction: "up"},function(){
+      view.$el.hide("slide",{direction: "up"},500,function(){
         if (view.close) { view.close(); }
         that.trigger("view:closed", view);
       if (cb){ cb.call(that); }
@@ -36,7 +36,7 @@ define(['marionette'], function(Marionette){
     open: function(view, callback){
       var that = this;
       this.$el.html(view.$el.hide());
-      view.$el.show("slide",{direction: "up"},function(){
+      view.$el.show("slide",{direction: "up"},500,function(){
         callback.call(that);
       });
     }

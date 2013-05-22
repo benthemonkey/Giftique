@@ -1,4 +1,3 @@
-/*global $*/
 define(
 	[       'marionette','vent', 'templates', 'views', 'collections/AnswerList', 'collections/QuestionList','collections/ProductList', 'models/Product'],
 	function(Marionette,  vent,   templates,   views,               AnswerList,               QuestionList,              ProductList,          Product){
@@ -17,7 +16,8 @@ define(
 		productLayout = new views.ProductLayout(),
 		questionList = new QuestionList(),
 		navbarView = new views.NavbarView({ collection: questionList, model: user }),
-		answerList = new AnswerList();
+		answerList = new AnswerList(),
+		bounceAnimation;
 
 		app.addRegions({
 			navbar: "#navbar",
@@ -26,7 +26,9 @@ define(
 		});
 
 		//dont start app until questions have loaded
-		app.init = function(Router, Controller){
+		app.init = function(){
+			//app.etsyTest();
+
 			var query = new Parse.Query(questionList.model);
 			query.find({
 				success: function(results){
@@ -36,15 +38,10 @@ define(
 						return atts;
 					}));
 
-					app.start();
-					console.log("started app");
-					app.router = new Router({
-						controller : Controller
-					});
-
-					user = Parse.User.current();
 					if(user){
-						vent.trigger("user:logIn",function(){Backbone.history.start();});
+						vent.trigger("user:logIn",function(){
+							Backbone.history.start();
+						});
 					}else{
 						Backbone.history.start();
 					}
@@ -56,6 +53,7 @@ define(
 		};
 
 		app.addInitializer(function(){
+			user = Parse.User.current();
 			app.navbar.show(navbarView);
 		});
 
@@ -66,6 +64,13 @@ define(
 			}else{
 				$('#empty-list').show();
 				$('#get-results').attr("disabled","disabled").removeAttr("href");
+			}
+		});
+
+		vent.on('temp2', function(){
+			if(answerList.length < 5){
+				$(".share-facebook-story").attr("disabled","disabled");
+				vent.trigger("appendAlert","Answer more questions to share to timeline","info");
 			}
 		});
 
@@ -85,6 +90,11 @@ define(
 		});
 
 		vent.on('user:logIn',function(callback) {
+			//Etsy Error
+			if($('body').attr("data-etsy-success") != "true"){
+				vent.trigger("appendAlert","Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error");
+			}
+
 			user = Parse.User.current();
 
 			var query = new Parse.Query(answerList.model);
@@ -205,6 +215,7 @@ define(
 				query.lessThan("status",2);
 				query.equalTo("category",cat);
 				query.descending("views");
+				query.limit(20);
 				query.find({
 					success: function(results){
 						var existing_ids = [];
@@ -233,12 +244,13 @@ define(
 		});
 
 		vent.on('showResults', function(){
+			clearInterval(bounceAnimation);
 			//var answeredCategories = answerList.pluck("category"),
 			var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
 			showResults = function(cat){
 				//if(answeredCategories.indexOf(cat) != -1){
 					//$("#" + cat.replace('_','-') + "-products").fadeIn();
-					productLayout[cat].show(new views.ProductListCompositeView({ collection: productList[cat] }));
+					productLayout[cat].show(new views.ProductListCompositeView({ "collection": productList[cat] }));
 				//}
 			};
 
@@ -246,9 +258,11 @@ define(
 		});
 
 		vent.on('appendAlert', function(text, kind){
-			$("<div />").html(text+'<button type="button" class="close" data-dismiss="alert">&times;</button>')
+			var alert = $("<div />").html(text+'<button type="button" class="close" data-dismiss="alert">&times;</button>')
 				.addClass("alert alert-"+kind)
 				.appendTo("#alert-container");
+
+			setTimeout(function(){alert.hide("slideup");},5000);
 		});
 
 		app.appendSearch = function(answer){
@@ -318,6 +332,7 @@ define(
 							app.etsySearch(ajax_list);
 						}else{
 							$('#results-btn').find('.badge').show('bounce','slow');
+							if(!bounceAnimation) bounceAnimation = setInterval(function(){$("#results-btn").find(".badge").effect("bounce","slow");}, 10000);
 							//vent.trigger("showResults");
 						}
 					} else {
@@ -328,6 +343,30 @@ define(
 			});
 		return false;
 		};
-	return app;
+
+		app.etsyTest = function(){
+			$.ajax({
+				type: "GET",
+				url: "http://openapi.etsy.com/v2/users/benthemonkey.js",
+				async: true,
+				data: {
+					limit: 1,
+					api_key: "muf6785p5zsu3iwp28e51kgi"
+				},
+				dataType: "jsonp",
+				contentType: "application/json; charset=utf-8",
+				success: function(data){
+					console.log("adblock disabled");
+					$('body').attr("data-etsy-success","true");
+
+					$("#alert-container").find(".alert").alert("close");
+				},
+				error: function(){
+					console.log("ajax error");
+				}
+			});
+		};
+
+		return app;
 	}
 );
