@@ -26,21 +26,23 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 				var name = user.get("name") || "Account";
 				name = name.split(" ")[0];
 				this.ui.status.html('<li id="account-btn"><a href="#account">'+name+'</a></li><li><a class="pointer" id="log-out">Logout</a></li>');
-				$("#get-started").addClass("disabled");
+				$("#get-started").unbind("click")
+				.attr("href","#category/all").text("Get Started!");
 				this.ui.session_nav.fadeIn();
+				this.ui.progress_bar.show("slide",{direction: "up"});
 			}
 		},
 
 		collectionChange: function(){
 			var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
 			self = this,
-			anyAnswered = false,
+			total = 0,
 
 			answerCount = function(cat){
 				var count = self.collection.getAnsweredCategoryCount(cat);
+				total += count;
 				if( count > 0){
 					self.ui[cat].find('.label').text(count).removeClass("hide");
-					anyAnswered = true;
 				}else{
 					self.ui[cat].find('.label').addClass("hide");
 				}
@@ -48,10 +50,22 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 
 			cats.map(answerCount);
 
-			if(anyAnswered){
-				this.ui.results.removeClass("hide");
-			} else {
-				this.ui.results.addClass("hide");
+			var bar = $("#bar");
+
+			$(".bar-label").text(total+" / "+self.collection.length+" Questions Answered");
+
+			if(total > 0){
+				bar.css("width",100*total/self.collection.length+"%");
+			}else{
+				bar.css("width","0");
+			}
+
+			if(3 >= total){
+				bar.removeClass("bar-warning").addClass("bar-danger");
+			}else if(total > 3 && total <= 8){
+				bar.removeClass("bar-danger").removeClass("bar-success").addClass("bar-warning");
+			}else{
+				bar.removeClass("bar-warning").addClass("bar-success");
 			}
 		},
 
@@ -66,7 +80,8 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			all: "#all-btn",
 			results: "#results-btn",
 			status: "#status",
-			session_nav: "#session-nav"
+			session_nav: "#session-nav",
+			progress_bar: "#progress-bar"
 		},
 
 		events : {
