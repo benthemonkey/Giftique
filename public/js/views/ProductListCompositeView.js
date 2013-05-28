@@ -1,15 +1,17 @@
 /*global define*/
 
-define(['marionette','templates','vent','views/ProductItemView'], function (Marionette,templates,vent,ProductItemView) {
+define(['marionette','templates','vent','views/ProductListItemView','quicksand'], function (Marionette,templates,vent,ProductListItemView) {
   "use strict";
 
   return Marionette.CompositeView.extend({
     template: templates.blank,
-    itemView : ProductItemView,
+    itemView : ProductListItemView,
 
-    initialize: function(){
-      this.listenTo(this.collection, 'change', this.render);
-    },
+    tagName: function(){ return 'ul class="products"'; },
+
+    //onShow: function(){
+    //  $("#travel-products2").quicksand($("#travel-products li"));
+    //},
 
     appendHtml: function(collectionView, itemView, index){
       var childrenContainer = collectionView.itemViewContainer ? collectionView.$(collectionView.itemViewContainer) : collectionView.$el;
