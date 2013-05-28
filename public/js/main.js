@@ -46,16 +46,19 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 	ThirdParty.init();
 	//$(document).ready(function(){
 
-	app.start();
+	app.etsyTest();
 	app.router = new Router({
 		controller : Controller
 	});
 
+	//app.init();
+	app.start();
+
 	var google_prefix = "http://commondatastorage.googleapis.com/giftiqueme/",
 	arr = [
-	'about-giftique-small1.jpg',
-	'about-giftique-small2.jpg',
-	'about-giftique-small3.jpg',
+	'about-giftique1.jpg',
+	'about-giftique2.jpg',
+	'about-giftique3.jpg',
 	'meet-robbie.png',
 	'play-button.png',
 	'b-activities-biking.jpg',
@@ -90,7 +93,7 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 		if(loaded == arr.length){
 			loadingBar.css("width","100%");
 			/*=== MAIN INITIALIZER ===*/
-			setTimeout(app.init,2000);
+			setTimeout(app.init,1000);
 		}
 	};
 
@@ -100,8 +103,4 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 		newimages[i].onLoad = imageLoaded();
 		newimages[i].src = google_prefix + arr[i];
 	}
-
-//});
-	//things to do before page display:
-	// Load images, load questions, if user load answers
 });

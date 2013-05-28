@@ -1,5 +1,5 @@
 <div class="row-fluid">
-	<div class="span8">
+	<div class="span6 offset1">
 		<div id="about-giftique" class="carousel slide">
 			<ol class="carousel-indicators">
 				<li data-target="#about-giftique" data-slide-to="0" class="active"></li>
@@ -8,19 +8,19 @@
 			</ol>
 			<div class="carousel-inner">
 				<div class="active item">
-					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique-small1.jpg" />
+					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique1.jpg" />
 					<div class="carousel-caption text-center">
 						<p>Tell us about <span class="red">unique</span> experiences in your relationship</p>
 					</div>
 				</div>
 				<div class="item">
-					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique-small2.jpg" />
+					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique2.jpg" />
 					<div class="carousel-caption text-center">
 						<p>Giftique creates <span class="red">personalized</span> gift recommendations</p>
 					</div>
 				</div>
 				<div class="item">
-					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique-small3.jpg" />
+					<img src="http://commondatastorage.googleapis.com/giftiqueme/about-giftique3.jpg" />
 					<div class="carousel-caption text-center">
 						<p>Give her a gift that <span class="red">strengthens</span> your bond</span></p>
 					</div>

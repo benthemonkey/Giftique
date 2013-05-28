@@ -4,9 +4,11 @@ body{
 	background: url('http://commondatastorage.googleapis.com/giftiqueme/grey_wash_wall.png');
 }
 
+.container-fluid{
+	margin-top: 10px;
+}
+
 .page{
-	max-width: 800px;
-	margin: 20px auto;
 	background-color: white;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
@@ -20,51 +22,52 @@ body{
 	cursor: pointer;
 }
 
-.exclaim-container{
-	display: inline;
+.nav-tabs{
+	margin-bottom: 0;
+}
+
+.nav-tabs > li > a{
+	background-color: #F0F0F0;
+	padding: 6px;
+	line-height: 14px;
+	margin-top: 7px;
+}
+
+.nav-tabs > li > .all{
+	font-weight: bold;
+	padding: 10px;
+	margin-top: 0;
+}
+
+.alert-container{
 	position: absolute;
+	margin-left: -20%;
+	left: 50%;
+	top: 1px;
+	z-index: 999999;
 }
 
-.exclaim{
-	display: none;
-}
-
-#content{
-	margin: 0 20px 20px;
+.navbar-fixed-bottom{
+	height: 30px;
 }
 
 .navbar .brand{
 	padding: 5px 20px;
 }
 
+.progress{
+	position: relative;
+	margin-bottom: 40px;
+}
+
 .bar-label{
 	position: absolute;
-	left: 50%;
-	margin-left: -90px;
-	color: #000;
+	width: 100%;
+	text-align: center;
 }
 
-/* Sidebar */
-
-.nav-list{
-	padding: 5px 10px;
-}
-
-.nav-list > li > a{
-	margin-left: -10px;
-	margin-right: -10px;
-	padding: 0 5px;
-}
-
-span.label{
-	float: right;
-	margin-top: 1px;
-	margin-bottom: 1px;
-}
-
-.sidebar{
-	padding: 5px 0;
-	margin-bottom: 10px;
+.footer-nav > li{
+	line-height: 10px;
 }
 
 /* Questions */
@@ -73,18 +76,19 @@ span.label{
 	padding: 40px 20px;
 	background-color: white;
 	background-color: rgba(255,255,255,.8);
-  -webkit-border-top-right-radius: 4px;
+	min-height: 200px;
+  /*-webkit-border-top-right-radius: 4px;
      -moz-border-top-right-radius: 4px;
           border-top-right-radius: 4px;
   -webkit-border-top-left-radius: 4px;
      -moz-border-top-left-radius: 4px;
-          border-top-left-radius: 4px;
+          border-top-left-radius: 4px;*/
 }
 
-.question > h3{
+/*.question > h3{
 	margin-top: 40px;
 	margin-bottom: 40px;
-}
+}*/
 
 .question-form{
 	background-size: cover;
@@ -111,24 +115,34 @@ input.line:focus {
 	margin-top: 0;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
+	background-color: white;
+	background-color: rgba(255,255,255,0.95);
 }
 
 .well.product-well{
 	padding: 0;
 }
 
+.form-inline{
+	margin-bottom: 0;
+	padding: 5px;
+	background-color: #F0F0F0;
+	background-color: rgba(240,240,240,.9);
+	border-radius: 5px;
+}
+
 .products{
-	/*max-height: 300px;*/
 	overflow-y: scroll;
 	margin-left: 0;
 	margin-bottom: 0;
+	min-height: 390px;
 }
 
 .product{
 	width: 160px;
 	list-style: none;
 	float: left;
-	margin-left: 15px;
+	margin-right: 10px;
 	margin-top: 10px;
 }
 
@@ -144,7 +158,9 @@ input.line:focus {
 
 .intro{
 	position: relative;
-	border: 1px solid grey;
+	border: 1px solid;
+	max-width: 300px;
+	margin: 40px;
 }
 
 .red{
@@ -161,9 +177,9 @@ input.line:focus {
 	filter: alpha(opacity=90);
 }
 
-.carousel{
+/*.carousel{
 	max-width: 450px;
-}
+}*/
 
 .btn-link{
 	height: 20px;

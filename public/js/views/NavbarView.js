@@ -25,7 +25,10 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			if(user){
 				var name = user.get("name") || "Account";
 				name = name.split(" ")[0];
-				this.ui.status.html('<li id="account-btn"><a href="#account">'+name+'</a></li><li><a class="pointer" id="log-out">Logout</a></li>');
+				this.ui.status.html('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">'+name+' <b class="caret"></b></a>'+
+					'<ul class="dropdown-menu"><li id="account-btn"><a href="#account">Account</a></li>'+
+					'<li><a class="pointer" id="log-out">Logout</a></li></ul>'+
+					'</li>');
 				$("#get-started").unbind("click")
 				.attr("href","#category/all").text("Get Started!");
 				this.ui.session_nav.fadeIn();
@@ -101,9 +104,11 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 							user.set("name",response.name).save();
 							vent.trigger("user:logIn");
 							vent.trigger("user:firstLogIn");
+							vent.trigger("home");
 						});
 					} else {
 						vent.trigger("user:logIn");
+						vent.trigger("home");
 					}
 				},
 				error: function(user, error) {

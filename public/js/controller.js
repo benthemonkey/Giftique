@@ -2,16 +2,19 @@ define(['vent'], function (vent) {
 	"use strict";
 
 	return {
-		getCategory : function(param) {
+		getId : function(param) {
 			if(Parse.User.current()){
-				vent.trigger('getQuestion:category', param.trim() || '');
+				vent.trigger('getQuestion:id', param.trim() || '');
 			}else{
 				this.noLogIn();
 			}
 		},
-		getId : function(param) {
+		showProduct: function(param){
+			vent.trigger('showProduct',param.trim());
+		},
+		/*getCategory : function(param) {
 			if(Parse.User.current()){
-				vent.trigger('getQuestion:id', param.trim() || '');
+				vent.trigger('getQuestion:category', param.trim() || '');
 			}else{
 				this.noLogIn();
 			}
@@ -24,11 +27,11 @@ define(['vent'], function (vent) {
 				this.noLogIn();
 			}
 		},
-		account : function() {
-			vent.trigger('account');
-		},
 		tos : function() {
 			vent.trigger('tos');
+		},*/
+		account : function() {
+			vent.trigger('account');
 		},
 		home : function() {
 			vent.trigger('home');

@@ -4,9 +4,10 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
   return Marionette.ItemView.extend({
     template : templates.questionView,
 
+    tagName : 'form class="question-form" onsubmit="return false;"',
+
     ui : {
-      input: '.myinput',
-      form: '.question-form'
+      input: '.myinput'
     },
 
     events : {
@@ -19,12 +20,10 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
     },
 
     onShow: function(){
-      $("#session-nav").find(".dropdown").addClass("active");
-      $("#"+this.model.get("category")+"-btn").addClass("active");
-
-      if(this.model.get("answered")){
-        this.ui.input.val(this.model.get("answered")[0]);
-        $(".shuffle").addClass("hide");
+      if(this.model.get('background')){
+        $(".question-form").css("background-image","url('http://commondatastorage.googleapis.com/giftiqueme/"+this.model.get("background")+"')");
+      }else{
+        $(".question-form").css("background-image","none");
       }
     },
 
@@ -33,26 +32,15 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
         this.ui.input.val(this.model.get("answered")[0]);
         $(".shuffle").addClass("hide");
       }
-
-      if(this.model.get('background')){
-        this.ui.form.css("background-image","url('http://commondatastorage.googleapis.com/giftiqueme/"+this.model.get("background")+"')");
-      }else{
-        this.ui.form.css("background-image","none");
-      }
-    },
-
-    onClose: function(){
-      $('.nav > li').removeClass("active");
-      $("#categories > li").removeClass("active");
     },
 
     submitAnswer : function() {
       var answer = [];
 
       this.ui.input.each(function(index){
-        //if($(this).val() !== ''){
+        if($(this).val() !== ''){
           answer.push($(this).val());
-        //}
+        }
       });
 
       if(answer.length > 0){
@@ -65,15 +53,15 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
         });
 
         if(this.model.get('answered')){
-          vent.trigger("submitNewAnswer", ans);
+          vent.trigger("answerList:replace", ans);
         }else{
-          vent.trigger("submitAnswer", ans);
+          vent.trigger("answerList:add", ans);
         }
 
         this.model.set('answered', answer);
 
         var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment','all'],
-        cat = document.URL.split("#")[1].substr(9),
+        cat = $('.nav-tabs > li.active > a').html().toLowerCase().replace("/","_"),
         ind = cats.indexOf(cat);
         if(ind != -1){
           if(ind == 5){
@@ -88,7 +76,7 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
     },
 
     shuffleQuestion : function() {
-      vent.trigger('getQuestion:category', document.URL.split("#")[1].substr(9),this.model.id);
+      vent.trigger('getQuestion:category', $('.nav-tabs > li.active > a').html().toLowerCase().replace("/","_"),this.model.id);
     }
   });
 });

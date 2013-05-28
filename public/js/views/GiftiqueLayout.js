@@ -1,12 +1,16 @@
-define(['marionette','templates','vent'],function(Marionette, templates, vent){
+define(['marionette','templates','views/MainRegion','vent'],function(Marionette, templates, MainRegion, vent){
 	"use strict";
 
 	return Backbone.Marionette.Layout.extend({
-		template: templates.productListLayout,
+		template: templates.giftiqueLayout,
+
+		initialize: function(options){
+			this.app = options.app;
+		},
 
 		onShow: function(){
-			$("#results-btn").addClass("active");
-			$('#results-btn').find('.badge').fadeOut();
+			vent.trigger("getQuestion:category","all");
+			this.app.navbarView.render();
 
 			vent.trigger("temp2");
 
@@ -64,12 +68,31 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 		},
 
 		regions: {
-			question: "#question",
-			results: "#results"
+			question: '#question',//new MainRegion({ el: "#question" }),
+			products: '#products'//new MainRegion({ el: "#products" })
+		},
+
+		events: {
+			'click .nav-tabs' : 'onCategoryClick',
+			'change #category-select' : 'onFilterChange',
+			'click #sortby button' : 'onSort'
+		},
+
+		onSort: function(e){
+			$("#sortby .btn").removeClass("active");
+      $(e.target).addClass("active");
+      vent.trigger("productList:filter");
+		},
+
+		onFilterChange: function(){
+			vent.trigger("productList:filter");
+		},
+
+		onCategoryClick: function(e){
+			vent.trigger("getQuestion:category",e.target.innerText.toLowerCase().replace("/","_"));
 		},
 
 		onClose: function(){
-			$('#results-btn').removeClass("active");
 			$('.share-facebook-story').off('click');
 		}
 	});
