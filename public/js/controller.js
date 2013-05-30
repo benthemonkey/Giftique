@@ -10,6 +10,7 @@ define(['vent'], function (vent) {
 			}
 		},
 		showProduct: function(param){
+			vent.trigger('home');
 			vent.trigger('showProduct',param.trim());
 		},
 		/*getCategory : function(param) {

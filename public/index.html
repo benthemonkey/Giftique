@@ -37,6 +37,7 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 	<link rel="stylesheet" href="css/giftique.css" />
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<title>Giftique.me</title>
 </head>
 <body>
@@ -81,6 +82,13 @@
 		</div>
 	</div>
 	<div id="product-details"></div>
+	<div id="edit-question-modal" class="modal hide fade" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>Edit Question</h3>
+		</div>
+		<div class="modal-body" id="edit-question"></div>
+	</div>
 	<div id="privacy" class="modal hide fade" role="dialog">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -168,17 +176,33 @@
 			<h3>About Us</h3>
 		</div>
 		<div class="modal-body">
-			<p>Created as part of the NUVention: Web program at Northwestern University</p>
 			<h4>The Team</h4>
 			<dl class="dl-horizontal">
-				<dt>Lead Developer</dt>
-				<dd><a href="http://about.me/bensrothman" target="_blank">Ben Rothman</a></dd>
-				<dt>Business</dt>
-				<dd><a href="http://www.linkedin.com/in/mattocksswenson" target="_blank">Mattocks Swenson</a></dd>
+				<dt><a href="http://www.linkedin.com/in/mattocksswenson" target="_blank">Mattocks Swenson</a></dt>
+				<dd>Product Marketing/Business Development</dd>
+				<dt><a href="http://www.linkedin.com/in/japnasethi" target="_blank">Japna Sethi</a></dt>
+				<dd>Product Marketing</dd>
+				<dt><a href="http://about.me/bensrothman" target="_blank">Ben Rothman</a></dt>
+				<dd>Web Development</dd>
 			</dl>
+			<h4>Contributors</h4>
+			<dl class="dl-horizontal">
+				<dt><a href="http://www.matsglj.com" target="_blank">Mats Johansen</a></dt>
+				<dd>Web Design</dd>
+				<dt>Sinan Bolel</dt>
+				<dd>User Interface Consulting</dd>
+				<dt>Ben Slivka</dt>
+				<dd>Advisor</dd>
+				<dt>Mike Marasco</dt>
+				<dd>Advisor</dd>
+			</dl>
+			<p class="text-center"><small>Created as part of the <a href="http://entrepreneur.northwestern.edu/index.php/nuvention-web/" target="_blank">NUVention: Web</a> program at Northwestern University</small></p>
 		</div>
 	</div>
 	<div id="fb-root"></div>
 	<script data-main="js/main" src="js/libs/require.min.js"></script>
+	<script id="empty-list">
+		None
+	</script>
 </body>
 </html>

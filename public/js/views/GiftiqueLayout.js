@@ -9,7 +9,6 @@ define(['marionette','templates','views/MainRegion','vent'],function(Marionette,
 		},
 
 		onShow: function(){
-			vent.trigger("getQuestion:category","all");
 			this.app.navbarView.render();
 
 			vent.trigger("temp2");
@@ -73,23 +72,13 @@ define(['marionette','templates','views/MainRegion','vent'],function(Marionette,
 		},
 
 		events: {
-			'click .nav-tabs' : 'onCategoryClick',
-			'change #category-select' : 'onFilterChange',
-			'click #sortby button' : 'onSort'
-		},
-
-		onSort: function(e){
-			$("#sortby .btn").removeClass("active");
-      $(e.target).addClass("active");
-      vent.trigger("productList:filter");
-		},
-
-		onFilterChange: function(){
-			vent.trigger("productList:filter");
+			'click .nav-tabs' : 'onCategoryClick'
 		},
 
 		onCategoryClick: function(e){
-			vent.trigger("getQuestion:category",e.target.innerText.toLowerCase().replace("/","_"));
+			if(!$(e.target).closest('li').hasClass("active")){
+				vent.trigger("getQuestion:category",e.target.innerText.toLowerCase().replace("/","_").trim());
+			}
 		},
 
 		onClose: function(){

@@ -4,11 +4,10 @@ define(['marionette','templates','vent','views/ProductListItemView','quicksand']
   "use strict";
 
   return Marionette.CompositeView.extend({
-    template: templates.blank,
+    template: templates.productListCompositeView,
     itemView : ProductListItemView,
+    itemViewContainer: "#products-destination",
     emptyView: Marionette.ItemView.extend({ template: templates.emptyList }),
-
-    tagName: 'ul id="products-destination"',
 
     initialize: function(options){
 
@@ -28,7 +27,6 @@ define(['marionette','templates','vent','views/ProductListItemView','quicksand']
     },
 
     onShow: function(){
-      var self = this;
       setTimeout(function(){ vent.trigger("productList:filter"); },1000);
     },
 
@@ -40,6 +38,27 @@ define(['marionette','templates','vent','views/ProductListItemView','quicksand']
       //} else {
         //childrenContainer.children().eq(index).before(itemView.el);
       //}
+    },
+
+    events: {
+      'change #category-select' : 'onFilterChange',
+      'click #sortby button' : 'onSort',
+      'click .thumbnail' : 'onProductClick'
+    },
+
+    onSort: function(e){
+      $("#sortby .btn").removeClass("active");
+      $(e.target).addClass("active");
+      vent.trigger("productList:filter");
+    },
+
+    onFilterChange: function(){
+      vent.trigger("productList:filter");
+    },
+
+    onProductClick: function(e){
+      e.preventDefault();
+      vent.trigger('showProduct',$(e.target).parent().attr("href").split("/")[2]);
     }
   });
 });

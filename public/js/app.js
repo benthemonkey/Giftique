@@ -6,24 +6,25 @@ define(
 		var app = new Marionette.Application(),
 		user;
 
+		window.app = app; /*################TEMPORARY GLOBAL VARIABLE GET RID OF ME AHHHHHHH ################*/
+
 		app.productList = new ProductList();
 		app.questionList = new QuestionList();
 		app.answerList = new AnswerList();
 		app.navbarView = new views.NavbarView({ collection: app.questionList, model: user });
 		app.homeView = new views.HomeView();
-		var giftiqueLayout = new views.GiftiqueLayout({ app: app }),
-		productListView = new views.ProductListCompositeView({ "collection": app.productList });
+		//app.giftiqueLayout = new views.GiftiqueLayout({ app: app });
+		//productListView = new views.ProductListCompositeView({ "collection": app.productList });
 
 		app.addRegions({
 			navbar: "#navbar",
 			main   : new views.MainRegion({ currentView: app.homeView }),
-			productDetails: "#product-details"
+			productDetails: "#product-details",
+			editQuestion: "#edit-question"
 		});
 
 		//dont start app until questions have loaded
 		app.init = function(){
-			//app.etsyTest();
-
 			var query = new Parse.Query(app.questionList.model);
 			query.find({
 				success: function(results){
@@ -52,28 +53,16 @@ define(
 			app.navbar.show(app.navbarView);
 		});
 
-		vent.on("temp", function(){
-			if(app.answerList.length > 0){
-				$('#empty-list').hide();
-				$('#get-results').removeAttr("disabled").attr("href","#results");
-			}else{
-				$('#empty-list').show();
-				$('#get-results').attr("disabled","disabled").removeAttr("href");
-			}
-		});
-
-		vent.on('temp2', function(){
-			if(app.answerList.length < 5){
-				$(".share-facebook-story").attr("disabled","disabled");
-				//vent.trigger("appendAlert","Answer more questions to share to timeline","info");
-			}
-		});
-
 		vent.on('home', function() {
+			//user = Parse.User.current(); //double check user
+			//giftiqueLayout = new views.GiftiqueLayout({ app: app });
+
 			if(user){
-				app.main.show(giftiqueLayout);
-				giftiqueLayout.render();
-				giftiqueLayout.products.show(productListView);
+				app.giftiqueLayout = new views.GiftiqueLayout({ app: app });
+
+				app.main.show(app.giftiqueLayout);
+				app.giftiqueLayout.products.show(new views.ProductListCompositeView({ "collection": app.productList }));
+				vent.trigger("getQuestion:category","all");
 			}else{
 				app.main.show(new views.HomeView());
 			}
@@ -91,12 +80,14 @@ define(
 		});
 
 		vent.on('user:logIn',function(callback) {
+			user = Parse.User.current();
+
 			//Etsy Error
 			if($('body').attr("data-etsy-success") != "true"){
-				vent.trigger("appendAlert","Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error");
+				vent.trigger("appendAlert","Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error",true);
 			}
 
-			vent.trigger("answerList:getResults");
+			vent.trigger("productList:fetch");
 
 			//user = Parse.User.current();
 
@@ -143,6 +134,7 @@ define(
 				success: function(results){
 					results.forEach(function(product){
 						product.set("status",3).save();
+						app.productList.remove(product);
 					});
 				},
 				error: function(error){
@@ -157,8 +149,8 @@ define(
 
 			vent.trigger("answerList:add", answer);
 
-			vent.trigger("account");
-			app.router.navigate("#account");
+			$("#edit-question-modal").modal("hide");
+			app.router.navigate("#account", { trigger: false });
 		});
 
 		vent.on('answerList:add',function(answer){
@@ -179,6 +171,7 @@ define(
 				success: function(results){
 					results.forEach(function(product){
 						product.set("status",3).save();
+						app.productList.remove(product);
 					});
 				},
 				error: function(error){
@@ -202,11 +195,14 @@ define(
 
 			var ind = Math.floor( Math.random() * len );
 
-			giftiqueLayout.question.show(new views.QuestionView({ model: list[ind] }));
+			app.giftiqueLayout.question.show(new views.QuestionView({ model: list[ind] }));
 		});
 
 		vent.on('getQuestion:id', function(id){
-			app.main.show(new views.QuestionView({ model: app.questionList.get(id) }));
+			app.editQuestion.show(new views.QuestionView({ model: app.questionList.get(id) }));
+			$("#edit-question-modal").modal("show").on('hide',function(){
+				app.router.navigate("#account",{ trigger: false });
+			});
 		});
 
 		vent.on('questionList:clear:answered', function(){
@@ -214,7 +210,7 @@ define(
 			//questionList.getAnswered().forEach(clear);
 		});
 
-		vent.on('answerList:getResults', function(){
+		vent.on('productList:fetch', function(){
 			app.productList.reset();
 
 			var user = Parse.User.current(),
@@ -241,9 +237,26 @@ define(
 		});
 
 		vent.on("showProduct", function(product){
-			console.log(app.productList.get(product));
-			app.productDetails.show(new (Marionette.ItemView.extend({ template: templates.productDetailsView }))({ model: app.productList.get(product) }));
-			$("#product-modal").modal("show");
+			if(!app.productList.get(product)){
+				var query = new Parse.Query(Product);
+				query.get(product,{
+					success: function(result){
+						app.productDetails.show(new (Marionette.ItemView.extend({ template: templates.productDetailsView }))({ model: result }));
+						console.log(result);
+						$("#product-modal").find(".modal-header").html("<h4>Check out this gift I found using Giftique.me!</h4>");
+						$("#product-modal").modal("show");
+					},
+					error: function(a,err){ console.log(err + "\n error adding product"); }
+				});
+			}else{
+				app.productDetails.show(new (Marionette.ItemView.extend({ template: templates.productDetailsView }))({ model: app.productList.get(product) }));
+				console.log(app.productList.get(product));
+				$("#product-modal").modal("show").on('hide',function(){
+					app.router.navigate("#", { trigger: false });
+				});
+			}
+
+			app.router.navigate("product/"+product, { trigger: false });
 		});
 
 		vent.on("productList:filter", function(){
@@ -285,12 +298,12 @@ define(
 			});
 		});
 
-		vent.on('appendAlert', function(text, kind){
+		vent.on('appendAlert', function(text, kind, permanent){
 			var alert = $("<div />").html(text+'<button type="button" class="close" data-dismiss="alert">&times;</button>')
 				.addClass("alert alert-"+kind)
 				.appendTo("#alert-container");
 
-			setTimeout(function(){alert.hide("slideup");},5000);
+			if(!permanent) setTimeout(function(){alert.hide("slideup");},5000);
 		});
 
 		app.appendSearch = function(answer){
@@ -323,9 +336,10 @@ define(
 						'image'					: item.Images[0].url_170x135,
 						'category_path' : item.category_path,
 						'title'					: item.title,
+						'description'		: item.description,
 						'listing_id'		: item.listing_id,
 						'price'					: item.price,
-						'tages'					: item.tags,
+						'tags'					: item.tags,
 						'views'					: item.views,
 						'url'						: item.url
 					}
@@ -334,7 +348,7 @@ define(
 				console.log(prod);
 
 				prod.save({
-					success: function(){},
+					success: function(result){ app.productList.add(result); },
 					error: function(a,err){ console.log(err + "\n error adding product"); }
 				});
 
@@ -359,7 +373,7 @@ define(
 					if (data.ok) {
 						if(data.count > 0){
 							var prods = data.results.map(newProduct);
-							app.productList.add(prods);
+							//app.productList.add(prods);
 							console.log("successful ajax. adding products");
 							vent.trigger("productList:filter");
 						}

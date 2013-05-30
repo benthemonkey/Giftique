@@ -25,12 +25,17 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
       }else{
         $(".question-form").css("background-image","none");
       }
+
+      if(this.model.get("answered")){
+        $(".shuffle").hide();
+      }
+
+      this.ui.input.focus();
     },
 
     onRender: function(){
       if(this.model.get("answered")){
         this.ui.input.val(this.model.get("answered")[0]);
-        $(".shuffle").addClass("hide");
       }
     },
 
@@ -54,29 +59,26 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
 
         if(this.model.get('answered')){
           vent.trigger("answerList:replace", ans);
+          this.model.set('answered', answer);
         }else{
+          this.model.set('answered', answer); //must be performed before triggering getQuestion
           vent.trigger("answerList:add", ans);
-        }
 
-        this.model.set('answered', answer);
+          var cat = $(".nav-tabs > li.active > a").attr("href").substr(1);
+          if(cat == "all"){
+            var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
+            ind = cats.indexOf(this.model.get("category"));
 
-        var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment','all'],
-        cat = $('.nav-tabs > li.active > a').html().toLowerCase().replace("/","_"),
-        ind = cats.indexOf(cat);
-        if(ind != -1){
-          if(ind == 5){
-            vent.trigger('getQuestion:category', cats[0]);
-          }else if (ind == 6){
-            vent.trigger('getQuestion:category','all');
+            vent.trigger('getQuestion:category', cats[(ind + 1) % 5]);
           }else{
-            vent.trigger('getQuestion:category', cats[ind+1]);
+            vent.trigger('getQuestion:category',cat);
           }
         }
       }
     },
 
     shuffleQuestion : function() {
-      vent.trigger('getQuestion:category', $('.nav-tabs > li.active > a').html().toLowerCase().replace("/","_"),this.model.id);
+      vent.trigger('getQuestion:category', $(".nav-tabs > li.active > a").attr("href").substr(1),this.model.id);
     }
   });
 });

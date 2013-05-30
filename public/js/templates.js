@@ -9,6 +9,7 @@ define(function(require){
 	answerItemView				: require('tpl!templates/answerItemView.tpl'),
 	answerListCompositeView		: require('tpl!templates/answerListCompositeView.tpl'),
 	productItemView				: require('tpl!templates/productItemView.tpl'),
+	productListCompositeView	: require('tpl!templates/productListCompositeView.tpl'),
 	productDetailsView			: require('tpl!templates/productDetailsView.tpl'),
 	giftiqueLayout				: require('tpl!templates/giftiqueLayout.tpl'),
 	userLayout					: require('tpl!templates/userLayout.tpl'),

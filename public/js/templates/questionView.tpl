@@ -18,7 +18,7 @@
 } %>
 
 <div class="question">
-	<h4><%= categoryName(category) %> Question: <%= description %></h4>
+	<h4 class="question-header"><%= categoryName(category) %> Question: <%= description %></h4>
 	<% if (type == "single-blank"){ %>
 		<h3>
 			<%= content[0] %>
