@@ -13,6 +13,8 @@ define(
 		app.answerList = new AnswerList();
 		app.navbarView = new views.NavbarView({ collection: app.questionList, model: user });
 		app.homeView = new views.HomeView();
+		app.ajax_list = [];
+		app.etsyInProgress = false;
 		//app.giftiqueLayout = new views.GiftiqueLayout({ app: app });
 		//productListView = new views.ProductListCompositeView({ "collection": app.productList });
 
@@ -43,7 +45,7 @@ define(
 					}
 				},
 				error: function(error){
-					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
+					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error", true);
 				}
 			});
 		};
@@ -105,7 +107,7 @@ define(
 					if(callback) (callback)(app.answerList);
 				},
 				error: function(error){
-					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
+					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error", true);
 				}
 			});
 		});
@@ -126,21 +128,7 @@ define(
 
 		vent.on('answerList:replace', function(answer){
 			//var user = Parse.User.current(),
-			var query = new Parse.Query(Product);
-
-			query.equalTo("user",user);
-			query.equalTo("questionId",answer.get("question2"));
-			query.find({
-				success: function(results){
-					results.forEach(function(product){
-						product.set("status",3).save();
-						app.productList.remove(product);
-					});
-				},
-				error: function(error){
-					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
-				}
-			});
+			vent.trigger("productList:removeQuestionId", answer.get("question2"));
 
 			var question2_list = app.answerList.pluck("question2"),
 			remove_ans = app.answerList.at(question2_list.indexOf(answer.get("question2")));
@@ -163,21 +151,7 @@ define(
 		vent.on("answerList:remove", function(answer){
 			app.answerList.remove(answer);
 			app.questionList.get(answer.get("question2")).set({"answered": false});
-
-			var query = new Parse.Query(Product);
-			query.equalTo("user",user);
-			query.equalTo("questionId",answer.get("question2"));
-			query.find({
-				success: function(results){
-					results.forEach(function(product){
-						product.set("status",3).save();
-						app.productList.remove(product);
-					});
-				},
-				error: function(error){
-					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error");
-				}
-			});
+			vent.trigger("productList:removeQuestionId", answer.get("question2"));
 		});
 
 		vent.on('getQuestion:category', function(_category, _currentQuestionId) {
@@ -236,6 +210,28 @@ define(
 			});
 		});
 
+		vent.on("productList:removeQuestionId", function(questionId){
+			var query = new Parse.Query(Product);
+			query.equalTo("user",user);
+			query.equalTo("status",0);
+			query.equalTo("questionId",questionId);
+			query.find({
+				success: function(results){
+					results.forEach(function(product){
+						product.set("status",3);
+					});
+					Parse.Object.saveAll(results,{
+						success: function(){ console.log("updated products status"); },
+						error: function(error){ vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error", true); }
+					});
+					app.productList.remove(results);
+				},
+				error: function(error){
+					vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error", true);
+				}
+			});
+		});
+
 		vent.on("showProduct", function(product){
 			if(!app.productList.get(product)){
 				var query = new Parse.Query(Product);
@@ -257,6 +253,24 @@ define(
 			}
 
 			app.router.navigate("product/"+product, { trigger: false });
+		});
+
+		vent.on("productList:refetch", function(){
+			vent.trigger("appendAlert","Redoing searches. This may take a minute.","warning");
+			app.productList.forEach(function(product){
+				product.set("status",3);
+			});
+
+			Parse.Object.saveAll(app.productList.models,{
+				success: function(){ console.log("removed all items"); },
+				error: function(error){ vent.trigger('appendAlert',"Error: " + error.code + " " + error.message, "error", true); }
+			});
+
+			app.productList.reset();
+
+			app.answerList.forEach(function(answer){
+				app.appendSearch(answer);
+			});
 		});
 
 		vent.on("productList:filter", function(){
@@ -307,20 +321,23 @@ define(
 		});
 
 		app.appendSearch = function(answer){
-			var question = app.questionList.get(answer.get("question2")),
-			terms = question.get("appendTerms").map(function(term){
-				return {
+			var question = app.questionList.get(answer.get("question2"));
+			question.get("appendTerms").forEach(function(term){
+				app.ajax_list.push({
 					qid: question.id,
 					category: question.get("category"),
 					term: term,
 					query: answer.get("answer")[0] + " " + term
-				};
+				});
 			});
-			app.etsySearch(terms);
+			if(!app.etsyInProgress){
+				app.etsyInProgress = true;
+				app.etsySearch();
+			}
 		};
 
-		app.etsySearch = function(ajax_list) {
-			var search = ajax_list.shift(),
+		app.etsySearch = function() {
+			var search = app.ajax_list.shift(),
 			user = Parse.User.current(),
 
 			newProduct = function(item){
@@ -345,12 +362,7 @@ define(
 					}
 				});
 
-				console.log(prod);
-
-				prod.save({
-					success: function(result){ app.productList.add(result); },
-					error: function(a,err){ console.log(err + "\n error adding product"); }
-				});
+				//console.log(prod);
 
 				return prod;
 			};
@@ -373,13 +385,21 @@ define(
 					if (data.ok) {
 						if(data.count > 0){
 							var prods = data.results.map(newProduct);
+							Parse.Object.saveAll(prods,{
+								success: function(list){ app.productList.add(list); },
+								error: function(a,err){ console.log(err + "\n error adding products"); }
+							});
 							//app.productList.add(prods);
 							console.log("successful ajax. adding products");
 							vent.trigger("productList:filter");
+						}else{
+							vent.trigger("appendAlert","A search returned no results.","warning");
 						}
 
-						if(ajax_list.length > 0){
-							app.etsySearch(ajax_list);
+						if(app.ajax_list.length > 0){
+							app.etsySearch();
+						}else{
+							app.etsyInProgress = false;
 						}
 					} else {
 						alert(data.error);

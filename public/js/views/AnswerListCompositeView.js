@@ -7,10 +7,22 @@ define(['marionette','templates','vent','views/AnswerItemView'], function (Mario
     template : templates.answerListCompositeView,
     itemView : AnswerItemView,
     itemViewContainer : '.answer-list',
-    emptyView: Marionette.ItemView.extend({ template: "#empty-list" }),
+    emptyView: Marionette.ItemView.extend({ template: templates.emptyAnswerList }),
 
     initialize: function(){
       this.listenTo(this.collection, 'change', this.render);
+    },
+
+    events: {
+      'click #refetch': 'refetch'
+    },
+
+    refetch: function(){
+      vent.trigger('productList:refetch');
+      $("#refetch").attr("disabled","disabled");
+      setTimeout(function(){
+        $("#refetch").removeAttr("disabled");
+      }, 5000);
     }
   });
 });
