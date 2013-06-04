@@ -21,10 +21,11 @@
 			<span class="visible-desktop">Art/Entertainment</span></a></li>
 	</ul>
 	<div id="question"></div>
-	<div class="progress">
+	<div class="progress hide">
 		<div class="bar-label"></div>
 		<div class="bar" id="bar"></div>
 	</div>
-	<small>The term 'Etsy' is a trademark of Etsy, Inc.<br/>This application uses the Etsy API but is not endorsed or certified by Etsy, Inc.</small>
+	<small>The term 'Etsy' is a trademark of Etsy, Inc.<br/>
+		This application uses the Etsy API but is not endorsed or certified by Etsy, Inc.</small>
 </div>
 <div class="span6" id="products"></div>

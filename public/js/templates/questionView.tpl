@@ -18,29 +18,27 @@
 } %>
 
 <div class="question">
-	<h4 class="question-header"><%= categoryName(category) %> Question: <%= description %></h4>
-	<% if (type == "single-blank"){ %>
-		<h3>
-			<%= content[0] %>
-			&nbsp;
-			<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
-			&nbsp;
-			<%= content[1] %>
-		</h3>
-	<% }else if(type == "short-answer"){ %>
-		<h3>
-			<%= content %>
-		</h3>
-		<p>
-			<div class="text-right">
-				<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
-			</div>
-		</p>
-	<% }else{ %>
-		<p>
-			Sorry! There was an error.
-		</p>
-	<% } %>
+	<div class="question-body">
+		<p class="question-category"><%= categoryName(category) %> Question: <%= description %></p>
+		<% if (type == "single-blank"){ %>
+			<p class="question-text">
+				<%= content[0] %>
+				&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;
+				<%= content[1] %>
+			</p>
+		<% }else if(type == "short-answer"){ %>
+			<p class="question-text">
+				<%= content %>
+			</p>
+		<% }else{ %>
+			<p>
+				Sorry! There was an error.
+			</p>
+		<% } %>
+	</div>
+	<div class="text-right question-input">
+		<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
+	</div>
 </div>
 <div class="form-actions text-right">
 	<button type="button" class="btn shuffle">Different Question</button>

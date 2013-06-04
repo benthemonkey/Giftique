@@ -7,10 +7,17 @@ define(['marionette','templates','vent','views/ProductListItemView','quicksand']
     template: templates.productListCompositeView,
     itemView : ProductListItemView,
     itemViewContainer: "#products-destination",
-    emptyView: Marionette.ItemView.extend({ template: templates.emptyList }),
+    emptyView: Marionette.ItemView.extend({ template: templates.emptyList,
+      onShow: function(){
+        $('#products-source').html('<br/><div class="alert alert-info">'+
+          '<h5>How to use Giftique.me</h5><ul>'+
+          '<li>Answer a few questions to optimize gift search results.</li>'+
+          '<li>If you liked (or disliked) the results or plan to buy one, please let us know through our \'Contact Us\' form at the bottom!</li>'+
+          '<li>Gift suggestions appear here.</li></ul><br/></div>');
+      }
+    }),
 
     initialize: function(options){
-
       var delay = (function(){
         var timer = 0;
         return function(callback, ms){
@@ -21,7 +28,7 @@ define(['marionette','templates','vent','views/ProductListItemView','quicksand']
 
       $(window).resize(function(){
         delay(function(){
-          $(".products").css("height",($(window).height()-30-91)+"px");
+          $(".products").css("height",($(window).height()-35-110)+"px");
         }, 500);
       });
     },

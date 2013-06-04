@@ -19,7 +19,7 @@ define(
 		//productListView = new views.ProductListCompositeView({ "collection": app.productList });
 
 		app.addRegions({
-			navbar: "#navbar",
+			navbar: "#status",
 			main   : new views.MainRegion({ currentView: app.homeView }),
 			productDetails: "#product-details",
 			editQuestion: "#edit-question"
@@ -52,11 +52,12 @@ define(
 
 		app.addInitializer(function(){
 			user = Parse.User.current();
+			app.navbarView.model = user;
 			app.navbar.show(app.navbarView);
 		});
 
 		vent.on('home', function() {
-			//user = Parse.User.current(); //double check user
+			user = Parse.User.current(); //double check user
 			//giftiqueLayout = new views.GiftiqueLayout({ app: app });
 
 			if(user){
@@ -86,7 +87,7 @@ define(
 
 			//Etsy Error
 			if($('body').attr("data-etsy-success") != "true"){
-				vent.trigger("appendAlert","Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error",true);
+				vent.trigger("appendAlert","ERROR: Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error",true);
 			}
 
 			vent.trigger("productList:fetch");
@@ -121,9 +122,9 @@ define(
 			app.productList.reset();
 			$("#products-source").empty();
 			app.questionList.forEach(function(question){ question.set("answered", false); });
-			app.navbarView.render();
+			//app.navbarView.render();
 
-			app.router.navigate("#");
+			app.router.navigate("#", {trigger: true});
 		});
 
 		vent.on('answerList:replace', function(answer){
@@ -303,13 +304,15 @@ define(
 				sortedData = filteredData;
 			}
 
-			$("#products-source").quicksand(sortedData,{
-				useScaling: true,
-				//adjustHeight: false,
-				adjustWidth: 'dynamic'
-			},function(){
-				$(".products").css("height",($(window).height()-30-91)+"px");
-			});
+			if(sortedData.length > 0){
+				$("#products-source").quicksand(sortedData,{
+					useScaling: true,
+					//adjustHeight: 'dynamic',
+					adjustWidth: 'dynamic'
+				},function(){
+					$(".products").css("height",($(window).height()-35-110)+"px");
+				});
+			}
 		});
 
 		vent.on('appendAlert', function(text, kind, permanent){

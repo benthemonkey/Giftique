@@ -1,3 +1,7 @@
 <a class="thumbnail" href="#/product/<%= objectId || id %>" onclick="_gaq.push(['_trackEvent', '<%= category %>', '<%= term %>', '<%= query %>', <%= etsy_item.price %>]);">
-	<img data-src="holder.js/260x180" src="<%= etsy_item.image %>" />
+	<img src="<%= etsy_item.image %>" />
+	<div class="thumbnail-footer">
+		<span>&nbsp;$<%= etsy_item.price %></span>
+		<span class="pull-right"><i class="icon-eye-open icon-blue"></i> <%= etsy_views %>&nbsp;</span>
+	</div>
 </a>

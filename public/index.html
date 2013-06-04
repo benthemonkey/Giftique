@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<!--width=device-width, -->
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta property="og:url" content="http://www.giftique.me/" />
-	<meta property="og:image" content="http://commondatastorage.googleapis.com/giftiqueme/giftique-g.gif" />
+	<meta property="og:image" content="http://commondatastorage.googleapis.com/giftiqueme%2Ficon500x500.jpg" />
 	<meta property="og:title" content="Giftique.me" />
 	<meta property="og:description" content="Personalized gifts to represent your relationship." />
 	<meta property="fb:app_id" content="128520183979985" />
@@ -33,23 +33,20 @@
 	<link href="http://commondatastorage.googleapis.com/giftiqueme/apple-touch-startup-image-1496x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
 
 	<link rel="shortcut icon" href="favicon.ico">
-	
-	<link rel="stylesheet" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+
+	<link rel="stylesheet" href="css/bootstrap-custom3.css" />
 	<link rel="stylesheet" href="css/giftique.css" />
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<title>Giftique.me</title>
 </head>
 <body>
-	<div class="navbar navbar-static-top" id="navbar">
-		<div class="navbar-inner">
-			<a class="brand" href="#"><img src="http://commondatastorage.googleapis.com/giftiqueme/giftiquemelogo-small.png" style="height: 30px;"/></a>
-			<ul class="nav pull-right" id="status">
-				<li><a class="pointer">Log In / Sign Up <img src="http://commondatastorage.googleapis.com/giftiqueme/facebook.png" style="height: 20px; width: 20px;" /></a></li>
-			</ul>
-		</div><!-- /navbar-inner -->
+	<div class="header">
+		<div class="sub-header">
+			<a class="brand" href="#"></a>
+		</div>
+		<div class="sub-header" id="status"></div>
 	</div>
-	<div id="alert-container" class="alert-container span6 offset3"></div>
+	<div id="alert-container" class="alert-container"></div>
 	<div class="container-fluid">
 		<div id="main" class="row-fluid">
 			<div class="span4 offset4 text-center">
@@ -60,16 +57,16 @@
 			</div>
 		</div>
 	</div>
-	<div class="navbar navbar-fixed-bottom">
-		<div class="navbar-inner">
-			<ul class="nav footer-nav">
-				<li><a href="#privacy" data-toggle="modal" data-role="button"><small>Privacy Policy</small></a></li>
-				<li><a href="#tos" data-toggle="modal" data-role="button"><small>Terms of Service</small></a></li>
-				<li><a href="#about-us" data-toggle="modal" data-role="button"><small>About Us</small></a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="http://www.facebook.com/giftiqueme" target="_blank"><small>Facebook</small></a></li>
-				<li><a href="http://twitter.com/GiftiqueMe" target="_blank"><small>Twitter</small></a></li>
-			</ul>
+	<div class="footer-gradient"></div>
+	<div class="footer">
+		<div class="sub-footer">
+			<a href="http://www.facebook.com/giftiqueme" class="social-icon facebook-icon" target="_blank"></a>
+			<a href="http://twitter.com/GiftiqueMe" class="social-icon twitter-icon" target="_blank"></a>
+		</div>
+		<div class="sub-footer footer-middle">
+			<a href="#about-us" data-toggle="modal" data-role="button"><small>About Us</small></a>
+			<a href="#privacy" data-toggle="modal" data-role="button"><small>Privacy Policy</small></a>
+			<a href="#tos" data-toggle="modal" data-role="button"><small>Terms of Service</small></a>
 		</div>
 	</div>
 	<div id="meet-robbie" class="modal hide fade" role="dialog" >

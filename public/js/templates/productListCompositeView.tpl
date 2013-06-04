@@ -6,16 +6,18 @@
 			<button type="button" class="btn">Views</button>
 			<button type="button" class="btn">Price</button>
 		</div>
-		&nbsp;&nbsp;Filter Category:&nbsp;
-		<select name="category" class="input-medium" id="category-select">
-			<option value="all">All</option>
-			<option value="travel">Travel</option>
-			<option value="places">Places</option>
-			<option value="food_drink">Food/Drink</option>
-			<option value="hobbies">Hobbies</option>
-			<option value="activities">Activities</option>
-			<option value="art_entertainment">Art/Entertainment</option>
-		</select>
+		<div class="pull-right">
+			Filter Category:&nbsp;
+			<select name="category" class="input-medium" id="category-select">
+				<option value="all">All</option>
+				<option value="travel">Travel</option>
+				<option value="places">Places</option>
+				<option value="food_drink">Food/Drink</option>
+				<option value="hobbies">Hobbies</option>
+				<option value="activities">Activities</option>
+				<option value="art_entertainment">Art/Entertainment</option>
+			</select>
+		</div>
 	</form>
 </div>
 <ul id="products-source" class="products"></ul>

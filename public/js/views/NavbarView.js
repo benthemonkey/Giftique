@@ -4,7 +4,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 	return Marionette.ItemView.extend({
 		template : templates.navbar,
 
-		tagName : 'div class="navbar-inner"',
+		tagName : 'div class="dropdown"',
 
 		modelEvents : {
 			'change': 'modelChange'
@@ -25,14 +25,6 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			if(user){
 				var name = user.get("name") || "Account";
 				name = name.split(" ")[0];
-				this.ui.status.html('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">'+name+' <b class="caret"></b></a>'+
-					'<ul class="dropdown-menu"><li id="account-btn"><a href="#account">Account</a></li>'+
-					'<li><a class="pointer" id="log-out">Logout</a></li></ul>'+
-					'</li>');
-				$("#get-started").unbind("click")
-				.attr("href","#category/all").text("Get Started!");
-				this.ui.session_nav.fadeIn();
-				this.ui.progress_bar.show("slide",{direction: "up"});
 			}
 		},
 
@@ -53,7 +45,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 
 			cats.map(answerCount);
 
-			var bar = $("#bar");
+			/*var bar = $("#bar");
 
 			$(".bar-label").text(total+" / "+self.collection.length+" Questions Answered");
 
@@ -69,7 +61,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 				bar.removeClass("bar-danger").removeClass("bar-success").addClass("bar-warning");
 			}else{
 				bar.removeClass("bar-warning").addClass("bar-success");
-			}
+			}*/
 		},
 
 		ui : {
@@ -88,40 +80,14 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 		},
 
 		events : {
-			'click .facebook-log-in': 'facebookLogIn',
-			'click #log-out'		: 'logOut'
-		},
-
-		facebookLogIn: function(){
-			var self = this;
-
-			Parse.FacebookUtils.logIn(null, {
-				success: function(user) {
-					self.render();
-
-					if (!user.existed()) {
-						FB.api('/me', function(response) {
-							user.set("name",response.name).save();
-							vent.trigger("user:logIn");
-							vent.trigger("user:firstLogIn");
-							vent.trigger("home");
-						});
-					} else {
-						vent.trigger("user:logIn");
-						vent.trigger("home");
-					}
-				},
-				error: function(user, error) {
-					console.log("User cancelled the Facebook login or did not fully authorize.");
-				}
-			});
+			'click #log-out' : 'logOut'
 		},
 
 		logOut: function(){
 			Parse.User.logOut();
-			this.render();
-			vent.trigger("home");
+			//this.render();
 			vent.trigger("user:logOut");
+			vent.trigger("home");
 		}
 	});
 });
