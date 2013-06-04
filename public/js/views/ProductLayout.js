@@ -64,12 +64,8 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 		},
 
 		regions: {
-			travel: "#travel-products",
-			places: "#places-products",
-			food_drink: "#food-drink-products",
-			hobbies: "#hobbies-products",
-			activities: "#activities-products",
-			art_entertainment: "#art-entertainment-products"
+			question: "#question",
+			results: "#results"
 		},
 
 		onClose: function(){

@@ -7,30 +7,22 @@ define(['marionette','templates','vent','views/AnswerItemView'], function (Mario
     template : templates.answerListCompositeView,
     itemView : AnswerItemView,
     itemViewContainer : '.answer-list',
+    emptyView: Marionette.ItemView.extend({ template: templates.emptyAnswerList }),
 
     initialize: function(){
       this.listenTo(this.collection, 'change', this.render);
     },
 
-
-    onRender: function(){
-      if(this.collection.length > 0){
-        $('#empty-list').hide();
-        $('#get-results').removeAttr("disabled").attr("href","#results");
-      }else{
-        $('#empty-list').show();
-        $('#get-results').attr("disabled","disabled").removeAttr("href");
-      }
+    events: {
+      'click #refetch': 'refetch'
     },
 
-    events : {
-      'click #clear-all' : 'onClearAllClick'
-    },
-
-    onClearAllClick : function() {
-      if(!$('#clear-all').attr("disabled") && confirm("Clear all responses?")){
-        vent.trigger("questionList:clear:answered");
-      }
+    refetch: function(){
+      vent.trigger('productList:refetch');
+      $("#refetch").attr("disabled","disabled");
+      setTimeout(function(){
+        $("#refetch").removeAttr("disabled");
+      }, 5000);
     }
   });
 });

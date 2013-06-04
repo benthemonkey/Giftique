@@ -16,25 +16,19 @@
 		return "Error";
 	}
 } %>
-<form class="question-form" onsubmit="return false;">
-	<div class="question">
-		<h4><%= categoryName(category) %> Question: <%= description %></h4>
+
+<div class="question">
+	<div class="question-body">
+		<p class="question-category"><%= categoryName(category) %> Question: <%= description %></p>
 		<% if (type == "single-blank"){ %>
-			<h3>
+			<p class="question-text">
 				<%= content[0] %>
-				&nbsp;
-				<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
-				&nbsp;
+				&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;
 				<%= content[1] %>
-			</h3>
+			</p>
 		<% }else if(type == "short-answer"){ %>
-			<h3>
+			<p class="question-text">
 				<%= content %>
-			</h3>
-			<p>
-				<div class="text-right">
-					<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
-				</div>
 			</p>
 		<% }else{ %>
 			<p>
@@ -42,9 +36,12 @@
 			</p>
 		<% } %>
 	</div>
-	<div class="form-actions text-right">
-		<button type="button" class="btn shuffle">Different Question</button>
-		&nbsp;
-		<button type="submit" class="btn btn-primary submit">Submit</button>
+	<div class="text-right question-input">
+		<input type="text" class="input myinput" placeholder="<%= options.placeholder %>" required />
 	</div>
-</form>
+</div>
+<div class="form-actions text-right">
+	<button type="button" class="btn shuffle">Different Question</button>
+	&nbsp;
+	<button type="submit" class="btn btn-primary submit">Submit</button>
+</div>

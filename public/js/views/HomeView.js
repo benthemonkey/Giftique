@@ -1,17 +1,10 @@
-define(['marionette','templates'], function (Marionette,templates) {
+define(['marionette','templates','vent'], function (Marionette,templates,vent) {
 	"use strict";
 
 	return Marionette.ItemView.extend({
 		template: templates.homeView,
 
 		onShow: function(){
-			$('#home-btn').addClass("active");
-
-			if(Parse.User.current()){
-				$("#get-started").unbind("click")
-				.attr("href","#category/all").text("Get Started!");
-			}
-
 			$('#meet-robbie').on('shown', function(){
 				$('body').css('overflow', 'hidden');
 			}).on('hidden', function(){
@@ -19,8 +12,33 @@ define(['marionette','templates'], function (Marionette,templates) {
 			});
 		},
 
-		onClose: function(){
-			$('#home-btn').removeClass("active");
+		events: {
+			"click #facebook-log-in": "facebookLogIn"
+		},
+
+		facebookLogIn: function(){
+			var self = this;
+
+			Parse.FacebookUtils.logIn(null, {
+				success: function(user) {
+					//self.render();
+
+					if (!user.existed()) {
+						FB.api('/me', function(response) {
+							user.set("name",response.name).save();
+							vent.trigger("user:logIn");
+							vent.trigger("user:firstLogIn");
+							vent.trigger("home");
+						});
+					} else {
+						vent.trigger("user:logIn");
+						vent.trigger("home");
+					}
+				},
+				error: function(user, error) {
+					console.log("User cancelled the Facebook login or did not fully authorize.");
+				}
+			});
 		}
 	});
 });
