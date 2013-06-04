@@ -3,11 +3,12 @@ define(['marionette'],function(marionette) {
 
   return marionette.AppRouter.extend({
     appRoutes:{
-      'category/:category': 'getCategory',
+      //'category/:category': 'getCategory',
       'edit/:id': 'getId',
-      'results' : 'getResults',
+      //'results' : 'getResults',
       'account' : 'account',
-      'tos'     : 'tos',
+      'product/:id': 'showProduct',
+      //'tos'     : 'tos',
       '*action' : 'home'
     }
   });

@@ -4,7 +4,7 @@ define(function(require){
 	return {
 		MainRegion					: require('views/MainRegion'),
 		HomeView					: require('views/HomeView'),
-		ProductLayout				: require('views/ProductLayout'),
+		GiftiqueLayout				: require('views/GiftiqueLayout'),
 		ProductListCompositeView	: require('views/ProductListCompositeView'),
 		AnswerItemView				: require('views/AnswerItemView'),
 		AnswerListCompositeView		: require('views/AnswerListCompositeView'),

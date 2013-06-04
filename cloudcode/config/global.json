@@ -1,0 +1,18 @@
+{
+    "applications": {
+        "Giftique.me": {
+            "applicationId": "jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", 
+            "masterKey": "RdNgFPMn7flo8qtPORlvA0OSL6x7SWr9HpixXp7x"
+        }, 
+        "_default": {
+            "link": "giftique.me dev"
+        }, 
+        "giftique.me dev": {
+            "applicationId": "gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", 
+            "masterKey": "5eSxgpAjts2FuQdxttXlNpBfJFqgWgCroIKG4tY5"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.7"
+    }
+}

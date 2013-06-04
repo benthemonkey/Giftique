@@ -1,7 +1,7 @@
 define([],function(){
 	return {init : function(){
 		//Google Analytics
-		/*var _gaq = _gaq || [];
+		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-38458888-1']);
 		_gaq.push(['_trackPageview']);
 
@@ -9,12 +9,12 @@ define([],function(){
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();*/
+		})();
 
 		//facebook for parse start
 		window.fbAsyncInit = function() {
 			Parse.FacebookUtils.init({
-				appId      : '140050132852482', // Facebook App ID REAL: 128520183979985, DEV: 140050132852482
+				appId      : '128520183979985', // Facebook App ID REAL: 128520183979985, DEV: 140050132852482
 				//channelUrl : '//dev.giftique.me/channel.html', // Channel File
 				status     : false, // check login status
 				cookie     : true, // enable cookies to allow Parse to access the session
@@ -30,7 +30,7 @@ define([],function(){
 			js = d.createElement(s);
 			js.id = id;
 			//REAL: 128520183979985. DEV: 140050132852482
-			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=140050132852482";
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=128520183979985";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 

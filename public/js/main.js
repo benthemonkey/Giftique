@@ -42,22 +42,23 @@ require.config({
 
 require(['app','parse','router','controller','third_party','bootstrap','jquery_ui'],function(app,Parse,Router,Controller,ThirdParty){
 
-	Parse.initialize("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//Prod: ("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
+	Parse.initialize("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");//("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//Prod: ("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
 	ThirdParty.init();
 	//$(document).ready(function(){
 
-	app.start();
+	app.etsyTest();
 	app.router = new Router({
 		controller : Controller
 	});
 
+	//app.init();
+	app.start();
+
 	var google_prefix = "http://commondatastorage.googleapis.com/giftiqueme/",
 	arr = [
-	'about-giftique-small1.jpg',
-	'about-giftique-small2.jpg',
-	'about-giftique-small3.jpg',
-	'meet-robbie.png',
-	'play-button.png',
+	'GiftiqueFront2.jpg',
+	'facebook-button.png',
+	'giftiqueme-logo-white-shadow.png',
 	'b-activities-biking.jpg',
 	'b-activities-spa.jpg',
 	'b-activities-yoga.jpg',
@@ -86,11 +87,11 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 	var loaded = 0,
 	imageLoaded = function(){
 		loaded++;
-		loadingBar.css("width",loaded/arr.length*80+"%");
+		loadingBar.css("width",loaded/arr.length*95+"%");
 		if(loaded == arr.length){
 			loadingBar.css("width","100%");
-			/*=== MAIN INITIALIZER ===*/
-			setTimeout(app.init,2000);
+			//=== MAIN INITIALIZER ===
+			setTimeout(app.init,200);
 		}
 	};
 
@@ -100,8 +101,4 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 		newimages[i].onLoad = imageLoaded();
 		newimages[i].src = google_prefix + arr[i];
 	}
-
-//});
-	//things to do before page display:
-	// Load images, load questions, if user load answers
 });
