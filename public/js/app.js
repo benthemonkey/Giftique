@@ -11,7 +11,7 @@ define(
 		app.productList = new ProductList();
 		app.questionList = new QuestionList();
 		app.answerList = new AnswerList();
-		app.navbarView = new views.NavbarView({ collection: app.questionList, model: user });
+		app.navbarView = new views.NavbarView({ model: user });
 		app.homeView = new views.HomeView();
 		app.ajax_list = [];
 		app.etsyInProgress = false;
@@ -79,7 +79,11 @@ define(
 		});
 
 		vent.on('tos', function() {
-			app.main.show(new (Marionette.ItemView.extend({ template: templates.tos }))());
+			$('#tos-btn').click();
+		});
+
+		vent.on('privacy', function(){
+			$('#privacy-btn').click();
 		});
 
 		vent.on('user:logIn',function(callback) {

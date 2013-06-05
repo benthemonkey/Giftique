@@ -38,7 +38,7 @@ define(['marionette','templates','views/MainRegion','vent'],function(Marionette,
 		},
 
 		events: {
-			'click .nav-tabs' : 'onCategoryClick'
+			'click .nav-tabs>li>a' : 'onCategoryClick'
 		},
 
 		onCategoryClick: function(e){

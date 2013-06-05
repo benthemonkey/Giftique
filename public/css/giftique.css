@@ -115,7 +115,7 @@ a:hover{
 	z-index: 999999;
 }
 
-dt > a:hover{
+.modal a:hover{
 	color: #96989b;
 }
 

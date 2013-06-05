@@ -10,13 +10,13 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			'change': 'modelChange'
 		},
 
-		collectionEvents: {
+		/*collectionEvents: {
 			'change': 'collectionChange'
-		},
+		},*/
 
 		onRender: function(){
 			this.modelChange();
-			this.collectionChange();
+			//this.collectionChange();
 		},
 
 		modelChange: function(){
@@ -28,7 +28,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			}
 		},
 
-		collectionChange: function(){
+		/*collectionChange: function(){
 			var cats = ['travel','places','food_drink','hobbies','activities','art_entertainment'],
 			self = this,
 			total = 0,
@@ -45,7 +45,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 
 			cats.map(answerCount);
 
-			/*var bar = $("#bar");
+			var bar = $("#bar");
 
 			$(".bar-label").text(total+" / "+self.collection.length+" Questions Answered");
 
@@ -61,7 +61,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 				bar.removeClass("bar-danger").removeClass("bar-success").addClass("bar-warning");
 			}else{
 				bar.removeClass("bar-warning").addClass("bar-success");
-			}*/
+			}
 		},
 
 		ui : {
@@ -77,7 +77,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 			status: "#status",
 			session_nav: "#session-nav",
 			progress_bar: "#progress-bar"
-		},
+		},*/
 
 		events : {
 			'click #log-out' : 'logOut'

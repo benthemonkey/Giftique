@@ -7,7 +7,7 @@
 	<meta property="og:url" content="http://www.giftique.me/" />
 	<meta property="og:image" content="http://commondatastorage.googleapis.com/giftiqueme%2Ficon500x500.jpg" />
 	<meta property="og:title" content="Giftique.me" />
-	<meta property="og:description" content="Personalized gifts to represent your relationship." />
+	<meta property="og:description" content="Translating your relationships into gifts crafted with love." />
 	<meta property="fb:app_id" content="128520183979985" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -65,8 +65,8 @@
 		</div>
 		<div class="sub-footer footer-middle">
 			<a href="#about-us" data-toggle="modal" data-role="button"><small>About Us</small></a>
-			<a href="#privacy" data-toggle="modal" data-role="button"><small>Privacy Policy</small></a>
-			<a href="#tos" data-toggle="modal" data-role="button"><small>Terms of Service</small></a>
+			<a href="#privacy" id="privacy-btn" data-toggle="modal" data-role="button"><small>Privacy Policy</small></a>
+			<a href="#tos" id="tos-btn" data-toggle="modal" data-role="button"><small>Terms of Service</small></a>
 		</div>
 	</div>
 	<div id="meet-robbie" class="modal hide fade" role="dialog" >
@@ -180,7 +180,7 @@
 				<dt><a href="http://www.linkedin.com/in/japnasethi" target="_blank">Japna Sethi</a></dt>
 				<dd>Product Marketing</dd>
 				<dt><a href="http://about.me/bensrothman" target="_blank">Ben Rothman</a></dt>
-				<dd>Web Development</dd>
+				<dd>Engineer</dd>
 			</dl>
 			<h4>Contributors</h4>
 			<dl class="dl-horizontal">
@@ -198,5 +198,17 @@
 	</div>
 	<div id="fb-root"></div>
 	<script data-main="js/main" src="js/libs/require.min.js"></script>
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-38458888-1']);
+	_gaq.push(['_setDomainName', 'giftique.me']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+    	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
 </body>
 </html>

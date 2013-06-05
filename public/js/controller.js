@@ -27,10 +27,15 @@ define(['vent'], function (vent) {
 			}else{
 				this.noLogIn();
 			}
+		},*/
+		privacy : function() {
+			vent.trigger('home');
+			vent.trigger('privacy');
 		},
 		tos : function() {
+			vent.trigger('home');
 			vent.trigger('tos');
-		},*/
+		},
 		account : function() {
 			vent.trigger('account');
 		},

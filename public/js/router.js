@@ -8,7 +8,8 @@ define(['marionette'],function(marionette) {
       //'results' : 'getResults',
       'account' : 'account',
       'product/:id': 'showProduct',
-      //'tos'     : 'tos',
+      'tos'     : 'tos',
+      'privacy' : 'privacy',
       '*action' : 'home'
     }
   });
