@@ -377,7 +377,7 @@ define(
 
 			$.ajax({
 				type: "GET",
-				url: "http://openapi.etsy.com/v2/listings/active.js",
+				url: "https://openapi.etsy.com/v2/listings/active.js",
 				async: true,
 				cache: false,
 				data: {
@@ -421,7 +421,7 @@ define(
 		app.etsyTest = function(){
 			$.ajax({
 				type: "GET",
-				url: "http://openapi.etsy.com/v2/users/benthemonkey.js",
+				url: "https://openapi.etsy.com/v2/users/benthemonkey.js",
 				async: true,
 				data: {
 					limit: 1,
