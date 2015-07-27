@@ -88,6 +88,7 @@ define(
 
 		vent.on('user:logIn',function(callback) {
 			user = Parse.User.current();
+			app.navbarView.model = user;
 
 			//Etsy Error
 			if($('body').attr("data-etsy-success") != "true"){

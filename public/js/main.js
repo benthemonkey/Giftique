@@ -42,9 +42,8 @@ require.config({
 
 require(['app','parse','router','controller','third_party','bootstrap','jquery_ui'],function(app,Parse,Router,Controller,ThirdParty){
 
-	Parse.initialize("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//Prod: ("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
+	Parse.initialize("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");//("gMyxpM84HXUfooYCh9SYqieWgZyMY5xBcGUfkt4s", "D2S9TY00GRYQNYTXMEPQNGLze1FoDOUEFQTyOv8P");//Prod: ("jETjrmeloXB54t2oBPkLFsgyh4wmkU9vyS0PJwGO", "SgiDW5lYwfzxd5CB2z25eVx5SfB4kT5SGGM91Ymw");
 	ThirdParty.init();
-	//$(document).ready(function(){
 
 	app.etsyTest();
 	app.router = new Router({
@@ -54,7 +53,7 @@ require(['app','parse','router','controller','third_party','bootstrap','jquery_u
 	//app.init();
 	app.start();
 
-	var google_prefix = "http://commondatastorage.googleapis.com/giftiqueme/",
+	var google_prefix = "https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/",
 	arr = [
 	'GiftiqueFront2.jpg',
 	'facebook-button.png',

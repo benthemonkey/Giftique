@@ -14,7 +14,7 @@ define(['marionette','templates','vent'],function(Marionette, templates, vent){
 				FB.ui({
 					method: 'feed',
 					link: 'http://www.giftique.me',
-					picture: 'http://commondatastorage.googleapis.com/giftiqueme/giftique-g.jpg',
+					picture: 'https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/giftique-g.jpg',
 					name: 'Giftique.me',
 					caption: 'Personalized gifts to represent your relationship.',
 					description: 'Get fun, personalized gift recommendations for FREE by taking the Giftique quiz!'

@@ -7,7 +7,7 @@ define(['marionette','parse','templates','vent'], function (Marionette,Parse,tem
 		tagName : 'div class="dropdown"',
 
 		modelEvents : {
-			'change': 'modelChange'
+			'change': 'render'
 		},
 
 		/*collectionEvents: {

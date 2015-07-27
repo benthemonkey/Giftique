@@ -21,7 +21,7 @@ a:hover{
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: url('http://commondatastorage.googleapis.com/giftiqueme/GiftiqueFront2.jpg') no-repeat center;
+	background: url('http://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/GiftiqueFront2.jpg') no-repeat center;
 	background-size: cover;
 	z-index: 0;
 }
@@ -51,7 +51,7 @@ a:hover{
 	display: block;
 	height: 50px;
 	width: 150px;
-	background-image: url('../img/giftiqueme-logo-small2.png');
+	background-image: url('http://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/giftiqueme-logo-small.png');
 	background-size: 100%;
 	margin: 0 auto;
 }
@@ -306,7 +306,7 @@ a:hover{
 
 .social-icon{
 	display: inline-block;
-	background-image: url('../img/social-icons.png');
+	background-image: url('http://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/social-icons.png');
 	width: 40px;
 	height: 40px;
 }

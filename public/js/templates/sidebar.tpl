@@ -1,6 +1,6 @@
 <div class="well well-small sidebar">
-	<a class="brand nav-large" href="#"><img src="http://commondatastorage.googleapis.com/giftiqueme/giftiquemelogo.gif" /></a>
-	<a class="brand nav-small hide" href="#"><img src="http://commondatastorage.googleapis.com/giftiqueme/giftique-g.gif" /></a>
+	<a class="brand nav-large" href="#"><img src="https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/giftiquemelogo.gif" /></a>
+	<a class="brand nav-small hide" href="#"><img src="https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/giftique-g.gif" /></a>
 </div>
 <div class="well sidebar">
 	<ul class="nav nav-list">

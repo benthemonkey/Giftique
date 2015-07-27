@@ -21,7 +21,7 @@ define(['marionette','parse','templates','vent','models/Answer'], function (Mari
 
     onShow: function(){
       if(this.model.get('background')){
-        $(".question-form").css("background-image","url('http://commondatastorage.googleapis.com/giftiqueme/"+this.model.get("background")+"')");
+        $(".question-form").css("background-image","url('https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/"+this.model.get("background")+"')");
       }else{
         $(".question-form").css("background-image","none");
       }
