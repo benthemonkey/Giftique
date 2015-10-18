@@ -90,6 +90,10 @@ define(
 			user = Parse.User.current();
 			app.navbarView.model = user;
 
+			if(user.getUsername().substr(0, 9) === 'Anonymous'){
+				vent.trigger("appendAlert", "Warning: You are logged in anonymously. All information will be lost when your session expires.", "warning", true);
+			}
+
 			//Etsy Error
 			if($('body').attr("data-etsy-success") != "true"){
 				vent.trigger("appendAlert","ERROR: Etsy request failed. Try disabling any ad-blocking plugins. If you continue to get this error please contact us.","error",true);

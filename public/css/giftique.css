@@ -33,6 +33,11 @@ a:hover{
 	text-shadow: 1px 1px black;
 }
 
+#anonymous-log-in{
+	font-size: 16px;
+	text-shadow: 1px 1px black;
+}
+
 .header{
 	background-color: #3a3a3c;
 	position: static;
@@ -108,11 +113,7 @@ a:hover{
 }
 
 .alert-container{
-	position: absolute;
-	left: 5%;
-	right: 5%;
-	top: 35px;
-	z-index: 999999;
+	margin: 10px;
 }
 
 .modal a:hover{

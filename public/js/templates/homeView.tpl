@@ -4,7 +4,8 @@
 		<div class="row-fluid">
 			<div class="span4 offset4">
 				<p class="tagline">Translating your relationships into gifts crafted with love.</p>
-				<a id="facebook-log-in" href="#"><img src="https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/facebook-button.png" style="width: 250px; margin-top: 15px" /></a>
+				<a id="facebook-log-in" href="#"><img src="https://raw.githubusercontent.com/benthemonkey/Giftique/master/public/img/facebook-button.png" style="width: 250px; margin: 5px 0" /></a>
+				<p><a id="anonymous-log-in" href="#">Login Anonymously</a></p>
 			</div>
 		</div>
 	</div>

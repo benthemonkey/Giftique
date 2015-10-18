@@ -13,7 +13,8 @@ define(['marionette','templates','vent'], function (Marionette,templates,vent) {
 		},
 
 		events: {
-			"click #facebook-log-in": "facebookLogIn"
+			"click #facebook-log-in": "facebookLogIn",
+			"click #anonymous-log-in": "anonymousLogIn"
 		},
 
 		facebookLogIn: function(){
@@ -37,6 +38,23 @@ define(['marionette','templates','vent'], function (Marionette,templates,vent) {
 				},
 				error: function(user, error) {
 					console.log("User cancelled the Facebook login or did not fully authorize.");
+				}
+			});
+		},
+
+		anonymousLogIn: function(){
+			var self = this,
+				randomNumber = '' + new Date().getTime();
+
+			Parse.User.signUp('Anonymous' + randomNumber, randomNumber, { name: 'Anonymous' }, {
+				success: function(user) {
+					vent.trigger("user:logIn");
+					vent.trigger("home");
+					vent.trigger("appendAlert", "Warning: You are logged in anonymously. All information will be lost when your session expires.", "warning", true);
+				},
+				error: function(user, error) {
+					console.log(error);
+					console.log("Anonymous log in error.");
 				}
 			});
 		}
